@@ -1,0 +1,444 @@
+<div class="inicio">
+    <div class="col-12">
+        <img src="assets/logo-heav.png" alt="" height="80">
+        <h3 class="fw-bold mt-0 mb-4">Validación de Solicitudes</h3>
+        <hr class="mb-2">
+
+        <!--
+        <button style="width:155px;" type="button" class="btn btn-success m-1" data-bs-toggle="modal" data-bs-target="#modal-add" (click)="resetForm(modalForm)"><i class="fas fa-plus-circle"></i> Registrar</button>
+        <button style="width:225px;" type="button" class="btn btn-success m-1" data-bs-toggle="modal" data-bs-target="#modal-add-solicitante" (click)="resetForm(modalForm)"><i class="fas fa-plus-circle"></i> Nuevo Solicitante</button>
+        -->
+
+        <form class="row mt-2" #searchForm="ngForm" (submit)="filtrar(search.value, search_type.value)">
+            <div class="col-md-4 col-sm-4 mb-2">
+                <div class="form-group row mb-0">
+                    <label for="inputNOM" class="col-12 col-form-label">Filtrar Solicitud</label>
+                    <div class="col-12">
+                        <select class="form-select" aria-label="Default select example" #search_type (change)="filtrar(search.value, search_type.value);">
+                            <option value="name" selected>Nombre</option>
+                            <option value="email">Correo</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5 col-sm-5 mb-2">
+                <div class="form-group row mb-0">
+                    <label for="inputNOM" class="col-12 col-form-label">Buscar</label>
+                    <div class="col-12">
+                        <input type="text" class="form-control" placeholder="Buscar Usuario" aria-label="Search" #search (keyup)="filtrar(search.value, search_type.value);">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-3 mb-2">
+                <label for="inputNOM" class="col-12 col-form-label invisible">.</label>
+                <button type="submit" class="btn w-100 btn-success"><i class="fas fa-search"></i> Buscar</button>
+                <!--<button type="submit" class="btn w-100 btn-success" data-bs-toggle="modal" data-bs-target="#modal-add">Buscar <i class="fas fa-user-plus"></i></button>-->
+            </div>
+        </form>
+        <div class="row mt-2">
+            <div class="col-12">
+                <div class="table-responsive">
+                    <table class="table table-sm  text-start table-hover">
+                        <thead class="table-dark">
+                            <tr class="align-middle">
+                                <th class="pt-2 pb-2 pl-2 pr-2 text-center" scope="col">N°</th>
+                                <th scope="col">N° Solicitud</th>
+                                <th scope="col">Nombre del Solicitante</th>
+                                <th scope="col">Nombre del Paciente</th>
+                                <th scope="col">Situacion</th>
+                                <th scope="col">Fecha de Situacion</th>
+                                <th scope="col">Solicitud</th>
+                                <th scope="col">Estado</th>
+                                <th scope="col">Pago</th>
+                                <th scope="col" class="text-center">Operaciones</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white">
+    
+                            <ng-container *ngIf="ready">
+                                <tr class="align-middle" *ngFor="let data of solicitudes; let i = index" >
+                                    <td class="text-center">{{i+1}}</td>
+                                    <td>{{data.name}}</td>
+                                    <td>{{data.email}}</td>
+                                    <td>{{data.email}}</td>
+                                    <td>{{data.email}}</td>
+                                    <td>{{data.email}}</td>
+                                    <td>{{data.email}}</td>
+                                    <td>{{data.email}}</td>
+                                    <td>
+                                        <span class="badge rounded-pill bg-dark" *ngIf="data.privilegios==1">Administrador</span>
+                                        <span class="badge rounded-pill bg-secondary" *ngIf="data.privilegios==0">Usuario</span>
+                                    </td>
+                                    <td class="text-center">
+                                        <button style="width:120px;" type="button" class="btn btn-sm btn-primary m-1" data-bs-toggle="modal" data-bs-target="#modal-add" (click)='edit(data)'><i class="fas fa-edit"></i> Modificar</button>
+                                        <button style="width:120px;" type="button" class="btn btn-sm btn-danger m-1" data-bs-toggle="modal" data-bs-target="#modal-confirm" (click)='eliminar(data)'><i class="fas fa-trash"></i> Eliminar</button>
+                                    </td>
+                                </tr>
+                            </ng-container>
+            
+                            <ng-container *ngIf="!ready">
+                                <tr>
+                                    <td colspan="7" class="pt-3 pb-3">
+                                        <div id="load_table" class="w-100">
+                                            <div class="text-center">
+                                                <div class="spinner-border text-primary" role="status">
+                                                <span class="sr-only">Loading...</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </ng-container>
+    
+                            <ng-container *ngIf="ready && solicitudes.length==0">
+                                <tr>
+                                    <td>-</td>
+                                    <td>No hay datos</td>
+                                    <td>No hay datos</td>
+                                    <td>No hay datos</td>
+                                    <td>No hay datos</td>
+                                </tr>
+                            </ng-container>
+                            
+                        </tbody>
+                    </table>
+                </div>
+
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-end">
+                      <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Anterior</a>
+                      </li>
+                      
+                      <li *ngFor="let page of pages" class="page-item" [ngClass]="{'active': pageActive == page.pagina}" #elemPagination><a class="page-link" (click)="getSolicitudes(page.pagina)" style="cursor:pointer;">{{page.pagina}}</a></li>
+    
+                      <li class="page-item disabled">
+                        <a class="page-link" href="#">Siguiente</a>
+                      </li>
+                    </ul>
+                </nav>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- MODAL ADD -->
+<!-- MODAL ADD -->
+<div class="modal fade bd-example-modal-sm" style="z-index: 5000;" id="modal-add" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+
+            <div class="container-fluid modal-body" style="padding:15px;">
+                <div class="row justify-content-center"> 
+                    <div class="col-md-12">
+
+                                <button type="button" class="btn btn-danger" style="position:absolute;right:13px;padding:6px 15px;" (click)="closeForm(modalForm)"><i class="fas fa-lg fa-times"></i></button>
+                                
+                                <form #modalForm="ngForm" class="formulario-modal" enctype="multipart/form-data" (submit)="submit(modalForm)" novalidate="">
+                                    <h4 *ngIf="!solicitud.id" style="margin-bottom:18px;width:80%;">REGISTRAR SOLICITUD</h4>
+                                    <h4 *ngIf="solicitud.id" style="margin-bottom:18px;width:80%;">MODIFICAR SOLICITUD</h4>
+
+                                    <nav>
+                                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                            <a class="nav-item nav-link active disabled" id="nav-general-tab" data-toggle="tab" href="#nav-general" role="tab" aria-controls="nav-general" aria-selected="true">Datos del Solicitante</a>
+                                        </div>
+                                    </nav>
+                                    <div class="row justify-content-center">   
+                                        <div class="tab-content row justify-content-center col-12" id="nav-tabContent">
+                                            <div class="col-md-12 col-12 tab-pane fade show active" id="nav-general" role="tabpanel" aria-labelledby="nav-general-tab">
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group row mb-3">
+                                                            <label for="inputNOM" class="col-12 col-form-label">DNI</label>
+                                                            <div class="col-12">
+                                                                <input type="text" class="form-control form-control-sm" placeholder=""  autocomplete="off" [disabled]="!btn" [(ngModel)]="solicitud.sol_dni" name="sol_dni" #sol_dni readonly>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row mb-3">
+                                                            <label for="inputNOM" class="col-12 col-form-label">Apellidos y Nombres</label>
+                                                            <div class="col-12">
+                                                                <input type="text" class="form-control form-control-sm" placeholder=""  autocomplete="off" [disabled]="!btn" [(ngModel)]="solicitud.sol_nombre" name="sol_nombre" #sol_nombre readonly>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group row mb-3">
+                                                            <label for="inputPRIV" class="col-12 col-form-label">Parentesco</label>
+                                                            <div class="col-12">
+                                                                <select class="form-select form-select-sm w-100 pe-5" aria-label="Default select example" placeholder="Selecciona la respuesta" [(ngModel)]="solicitud.sol_parentesco" name="sol_parentesco" #sol_parentesco readonly>
+                                                                    <option value="" selected disabled>Selecciona la respuesta</option>
+                                                                    <option value="0">Usuario</option>
+                                                                    <option value="1">Administrador</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row mb-3">
+                                                            <label for="inputMOD" class="col-12 col-form-label">Solicitud</label>
+                                                            <div class="col-12">
+                                                                <select class="form-select form-select-sm w-100 pe-5" aria-label="Default select example" placeholder="Selecciona la respuesta" [(ngModel)]="solicitud.sol_solicitud" name="sol_solicitud" #sol_solicitud readonly>
+                                                                    <option value="" selected disabled>Selecciona la respuesta</option>
+                                                                    <option value="CAS">CAS</option>
+                                                                    <option value="276">276</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <nav class="mt-2">
+                                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                            <a class="nav-item nav-link active disabled" id="nav-general-tab" data-toggle="tab" href="#nav-general" role="tab" aria-controls="nav-general" aria-selected="true">Datos del Paciente</a>
+                                        </div>
+                                    </nav>
+                                    <div class="row justify-content-center">   
+                                        <div class="tab-content row justify-content-center col-12" id="nav-tabContent">
+                                            <div class="col-md-12 col-12 tab-pane fade show active" id="nav-general" role="tabpanel" aria-labelledby="nav-general-tab">
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group row mb-3">
+                                                            <label for="inputNOM" class="col-12 col-form-label">DNI</label>
+                                                            <div class="col-12">
+                                                                <input type="text" class="form-control form-control-sm" placeholder=""  autocomplete="off" [disabled]="!btn" [(ngModel)]="solicitud.pac_dni" name="pac_dni" #pac_dni readonly>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row mb-3">
+                                                            <label for="inputNOM" class="col-12 col-form-label">Apellidos y Nombres</label>
+                                                            <div class="col-12">
+                                                                <input type="text" class="form-control form-control-sm" placeholder=""  autocomplete="off" [disabled]="!btn" [(ngModel)]="solicitud.pac_nombre" name="pac_nombre" #pac_nombre readonly readonly>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group row mb-3">
+                                                            <label for="inputPRIV" class="col-12 col-form-label">Situación</label>
+                                                            <div class="col-12">
+                                                                <select class="form-select form-select-sm w-100 pe-5" aria-label="Default select example" placeholder="Selecciona la respuesta" [(ngModel)]="solicitud.pac_situacion" name="pac_situacion" #pac_situacion readonly>
+                                                                    <option value="" selected disabled>Selecciona la respuesta</option>
+                                                                    <option value="0">Usuario</option>
+                                                                    <option value="1">Administrador</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row mb-3">
+                                                            <label for="inputMOD" class="col-12 col-form-label">Fecha de Situación</label>
+                                                            <div class="col-12">
+                                                                <input type="date" class="form-control form-control-sm" placeholder="" [disabled]="!btn" [(ngModel)]="solicitud.pac_fecha" name="pac_fecha" #pac_fecha readonly>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    
+                                    <nav class="mt-2">
+                                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                            <a class="nav-item nav-link active disabled" id="nav-general-tab" data-toggle="tab" href="#nav-general" role="tab" aria-controls="nav-general" aria-selected="true">Pago</a>
+                                        </div>
+                                    </nav>
+                                    <div class="row justify-content-center">   
+                                        <div class="tab-content row justify-content-center col-12" id="nav-tabContent">
+                                            <div class="col-md-12 col-12 tab-pane fade show active" id="nav-general" role="tabpanel" aria-labelledby="nav-general-tab">
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group row mb-3">
+                                                            <label for="inputNOM" class="col-12 col-form-label">Filtrar Pago</label>
+                                                            <div class="col-12">
+                                                                <select class="form-select form-select-sm w-100 pe-5" aria-label="Default select example" placeholder="Selecciona la respuesta" [(ngModel)]="solicitud.pag_estado" name="pag_estado" #pag_estado required>
+                                                                    <option value="" selected disabled>Selecciona la respuesta</option>
+                                                                    <option value="0">Usuario</option>
+                                                                    <option value="1">Administrador</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row mb-3">
+                                                            <label for="inputNOM" class="col-12 col-form-label">N° Pago</label>
+                                                            <div class="col-12">
+                                                                <input type="email" class="form-control form-control-sm" placeholder="Correo" [disabled]="!btn" [(ngModel)]="solicitud.pag_nro" name="pag_nro" #pag_nro required>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group row mb-3">
+                                                            <label for="inputPRIV" class="col-12 col-form-label">Fecha de Pago</label>
+                                                            <div class="col-12">
+                                                                <input type="email" class="form-control form-control-sm" placeholder="Correo" [disabled]="!btn" [(ngModel)]="solicitud.pag_fecha" name="pag_fecha" #pag_fecha required>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row mb-3">
+                                                            <label for="inputMOD" class="col-12 col-form-label">Solicitud</label>
+                                                            <div class="col-12">
+                                                                <textarea class="form-control form-control-sm" placeholder="" row="4" [disabled]="!btn" [(ngModel)]="solicitud.pag_obs" name="pag_obs" #pag_obs required>
+                                                                </textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                                 
+                                    
+                                    <div class="w-100" style="height:12px;"></div>
+                                    <div class="msg-ajax-result"></div>
+
+
+                                    <div class="row justify-content-center">
+                                        <div class="col-sm-4 col-12 mb-2">
+                                            <button *ngIf="btn" type="submit" class="btn w-100 btn-success btn_modals" [disabled]="!modalForm.form.valid"><i class="far fa-lg fa-save"></i> Guardar</button>
+                                            <button *ngIf="!btn" type="button" class="btn w-100 btn-success btn_modals" disabled><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Cargando</button>
+                                        </div>
+                                        <div class="col-sm-4 col-12 mb-2 modal-btn-cont d-none">
+                                           
+                                        </div>
+                                        <div class="col-sm-4 col-12 mb-2">
+                                            <button type="button" class="btn w-100 btn-warning btn_modals" (click)="closeForm(modalForm)"><i class="fas fa-lg fa-ban"></i> Cancelar</button>
+                                        </div>
+                                    </div>
+
+
+                                </form>
+                                
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+<!-- MODAL ADD SOLICITANTE -->
+<!-- MODAL ADD SOLICITANTE -->
+<div class="modal fade bd-example-modal-sm" style="z-index: 5000;" id="modal-add-solicitante" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+
+            <div class="container-fluid modal-body" style="padding:15px;">
+                <div class="row justify-content-center"> 
+                    <div class="col-md-12">
+
+                                <button type="button" class="btn btn-danger" style="position:absolute;right:13px;padding:6px 15px;" (click)="closeForm(modalForm)"><i class="fas fa-lg fa-times"></i></button>
+                                
+                                <form #modalFormSolicitante="ngForm" class="formulario-modal" enctype="multipart/form-data" (submit)="submit(modalFormSolicitante)" novalidate="">
+                                    <h4 *ngIf="!solicitud.id" style="margin-bottom:18px;width:80%;">REGISTRAR SOLICITANTE</h4>
+                                    <h4 *ngIf="solicitud.id" style="margin-bottom:18px;width:80%;">MODIFICAR SOLICITANTE</h4>
+
+                                    <nav>
+                                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                            <a class="nav-item nav-link active disabled" id="nav-general-tab" data-toggle="tab" href="#nav-general" role="tab" aria-controls="nav-general" aria-selected="true">Datos del Solicitante</a>
+                                        </div>
+                                    </nav>
+                                    <div class="row justify-content-center">   
+                                        <div class="tab-content row justify-content-center col-12" id="nav-tabContent">
+                                            <div class="col-md-12 col-12 tab-pane fade show active" id="nav-general" role="tabpanel" aria-labelledby="nav-general-tab">
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <select class="form-select form-select-sm w-100 pe-5" aria-label="Default select example" placeholder="Selecciona la respuesta" [(ngModel)]="solicitante.tipo_doc" name="soli_tipo_doc" #sol_tipo_doc required>
+                                                            <option value="" selected disabled>Selecciona la respuesta</option>
+                                                            <option value="0">Usuario</option>
+                                                            <option value="1">Administrador</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group row mb-3">
+                                                            <label for="inputNOM" class="col-12 col-form-label">Número de Documento</label>
+                                                            <div class="col-12">
+                                                                <input type="text" class="form-control form-control-sm" placeholder=""  autocomplete="off" [disabled]="!btn" [(ngModel)]="solicitante.nro_doc" name="soli_nro_doc" #soli_nro_doc required >
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group row mb-3">
+                                                            <label for="inputNOM" class="col-12 col-form-label">Nombres</label>
+                                                            <div class="col-12">
+                                                                <input type="text" class="form-control form-control-sm" placeholder=""  autocomplete="off" [disabled]="!btn" [(ngModel)]="solicitante.nombres" name="soli_nombres" #soli_nombres required>
+                                                            </div>
+                                                        </div>          
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group row mb-3">
+                                                            <label for="inputNOM" class="col-12 col-form-label">Apellido Paterno</label>
+                                                            <div class="col-12">
+                                                                <input type="text" class="form-control form-control-sm" placeholder=""  autocomplete="off" [disabled]="!btn" [(ngModel)]="solicitante.apellido_pat" name="soli_apellido_pat" #soli_apellido_pat required>
+                                                            </div>
+                                                        </div>          
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group row mb-3">
+                                                            <label for="inputNOM" class="col-12 col-form-label">Apellido Materno</label>
+                                                            <div class="col-12">
+                                                                <input type="text" class="form-control form-control-sm" placeholder=""  autocomplete="off" [disabled]="!btn" [(ngModel)]="solicitante.apellido_mat" name="soli_apellido_pat" #soli_apellido_mat required>
+                                                            </div>
+                                                        </div>          
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+           
+                                    
+                                    <div class="w-100" style="height:12px;"></div>
+                                    <div class="msg-ajax-result"></div>
+
+
+                                    <div class="row justify-content-center">
+                                        <div class="col-sm-4 col-12 mb-2">
+                                            <button *ngIf="btn" type="submit" class="btn w-100 btn-success btn_modals" [disabled]="!modalFormSolicitante.form.valid"><i class="far fa-lg fa-save"></i> Guardar</button>
+                                            <button *ngIf="!btn" type="button" class="btn w-100 btn-success btn_modals" disabled><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Cargando</button>
+                                        </div>
+                                        <div class="col-sm-4 col-12 mb-2 modal-btn-cont d-none">
+                                           
+                                        </div>
+                                        <div class="col-sm-4 col-12 mb-2">
+                                            <button type="button" class="btn w-100 btn-warning btn_modals" (click)="closeForm(modalFormSolicitante)"><i class="fas fa-lg fa-ban"></i> Cancelar</button>
+                                        </div>
+                                    </div>
+
+
+                                </form>
+                                
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Modal Confirm-->
+<div class="modal fade" id="modal-confirm" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h4 class="modal-title" id="exampleModalLabel">Confirmar accion</h4>
+            <button type="button" class="btn btn-danger" style="position:absolute;right:13px;padding:6px 15px;" data-bs-dismiss="modal" aria-label="Close"><i class="fas fa-lg fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                ¿Esta seguro que desea eliminar el elemento?
+            </div>
+            <div class="modal-footer p-1">
+                <div class="row w-100">
+                    <div class="col-sm-6">
+                        <button *ngIf="btn" type="button" class="btn w-100 btn-danger m-1" (click)='eliminar({})'>Si</button>
+                        <button *ngIf="!btn" type="button" class="btn w-100 btn-danger m-1" (click)='eliminar({})'  disabled><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Cargando</button>
+                    </div>
+                    <div class="col-sm-6">
+                        <button type="button" class="btn w-100 btn-secondary m-1" (click)="closeConfirm()" [disabled]="!btn">No</button>
+                    </div>
+                </div>  
+            </div>
+        </div>
+    </div>
+</div>

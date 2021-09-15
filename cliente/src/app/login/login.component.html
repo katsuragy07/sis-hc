@@ -1,0 +1,50 @@
+<div class="container-fluid inicio color-text-secondary">
+    <div class="container-bg">
+        
+    </div>
+    <div class="container-header d-none">
+        <img class="float-right" src="assets/seo.png" alt="" width="180">
+    </div>
+    <div class="container-body">
+        <div class="row justify-content-center h-100 m-0">
+            <div class="col-xl-5 col-lg-5 col-md-6 col-sm-8 col-11 pt-3 pb-5">
+                
+                <div class="row">
+                    <div class="col-6">
+                        <img src="assets/logo-heav.png" alt="" width="100%">
+                    </div>
+                    <div class="col-6">
+                        <img class="pt-2 pt-sm-2 pt-md-3" src="assets/HEAVDD.jpg" alt="" width="100%">
+                    </div>
+                    <div class="col-12 pt-5 pb-4">
+                        <h1 class="text-center">LOGO</h1>
+                    </div>
+                </div>
+                    <form class="bg-white box-radius-lg pl-4 pr-4 pb-4 pt-3 position-relative" accept-charset="utf-8" autocomplete="off" #loginForm="ngForm" (submit)="submit(loginForm)">
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <div class="form-group row mb-2">
+                                    <label class="col-md-4 col-sm-4 col-12 col-form-label text-body fw-bold text-sm-end text-start">Usuario:</label>
+                                    <div class="col-xl-6 col-lg-7 col-md-7 col-sm-8 col-12">
+                                        <input type="text" class="form-control form-control-sm" placeholder="" required [(ngModel)]="login.user" name="user" #user autofocus>
+                                    </div>
+                                </div>
+                                <div class="form-group row mb-2">
+                                    <label class="col-md-4 col-sm-4 col-12 col-form-label text-body fw-bold text-sm-end text-start">Contraseña:</label>
+                                    <div class="col-xl-6 col-lg-7 col-md-7 col-sm-8 col-12">
+                                        <input type="password" class="form-control form-control-sm" placeholder="" required [(ngModel)]="login.password" name="password" #password>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12 text-center">
+                                <button class="btn btn-danger d-inline pl-5 pr-5 mb-2" style="width: 150px;">Ingresar</button>
+                            </div>
+                        </div>
+                    </form>
+               
+            </div>
+        </div>
+    </div>
+</div>

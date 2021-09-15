@@ -1,0 +1,458 @@
+<div class="inicio">
+    <div class="col-12">
+        <img src="assets/logo-heav.png" alt="" height="80">
+        <h3 class="fw-bold mt-0 mb-4">Atención de Solicitudes</h3>
+        <hr class="mb-2">
+
+        <!--
+        <button style="width:155px;" type="button" class="btn btn-success m-1" data-bs-toggle="modal" data-bs-target="#modal-add" (click)="resetForm(modalForm)"><i class="fas fa-plus-circle"></i> Registrar</button>
+        <button style="width:225px;" type="button" class="btn btn-success m-1" data-bs-toggle="modal" data-bs-target="#modal-add-solicitante" (click)="resetForm(modalForm)"><i class="fas fa-plus-circle"></i> Nuevo Solicitante</button>
+        -->
+
+        <form class="row mt-2" #searchForm="ngForm" (submit)="filtrar(search.value, search_type.value)">
+            <div class="col-md-4 col-sm-4 mb-2">
+                <div class="form-group row mb-0">
+                    <label for="inputNOM" class="col-12 col-form-label">Filtrar Solicitud</label>
+                    <div class="col-12">
+                        <select class="form-select" aria-label="Default select example" #search_type (change)="filtrar(search.value, search_type.value);">
+                            <option value="name" selected>Nombre</option>
+                            <option value="email">Correo</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5 col-sm-5 mb-2">
+                <div class="form-group row mb-0">
+                    <label for="inputNOM" class="col-12 col-form-label">Buscar</label>
+                    <div class="col-12">
+                        <input type="text" class="form-control" placeholder="Buscar Usuario" aria-label="Search" #search (keyup)="filtrar(search.value, search_type.value);">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-3 mb-2">
+                <label for="inputNOM" class="col-12 col-form-label invisible">.</label>
+                <button type="submit" class="btn w-100 btn-success"><i class="fas fa-search"></i> Buscar</button>
+                <!--<button type="submit" class="btn w-100 btn-success" data-bs-toggle="modal" data-bs-target="#modal-add">Buscar <i class="fas fa-user-plus"></i></button>-->
+            </div>
+        </form>
+        <div class="row mt-2">
+            <div class="col-12">
+                <div class="table-responsive">
+                    <table class="table table-sm  text-start table-hover">
+                        <thead class="table-dark">
+                            <tr class="align-middle">
+                                <th class="pt-2 pb-2 pl-2 pr-2 text-center" scope="col">N°</th>
+                                <th scope="col">N° Solicitud</th>
+                                <th scope="col">Nombre del Solicitante</th>
+                                <th scope="col">Nombre del Paciente</th>
+                                <th scope="col">Situacion</th>
+                                <th scope="col">Fecha de Situacion</th>
+                                <th scope="col">Solicitud</th>
+                                <th scope="col">Estado</th>
+                                <th scope="col">Pago</th>
+                                <th scope="col" class="text-center">Operaciones</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white">
+    
+                            <ng-container *ngIf="ready">
+                                <tr class="align-middle" *ngFor="let data of solicitudes; let i = index" >
+                                    <td class="text-center">{{i+1}}</td>
+                                    <td>{{data.name}}</td>
+                                    <td>{{data.email}}</td>
+                                    <td>{{data.email}}</td>
+                                    <td>{{data.email}}</td>
+                                    <td>{{data.email}}</td>
+                                    <td>{{data.email}}</td>
+                                    <td>{{data.email}}</td>
+                                    <td>
+                                        <span class="badge rounded-pill bg-dark" *ngIf="data.privilegios==1">Administrador</span>
+                                        <span class="badge rounded-pill bg-secondary" *ngIf="data.privilegios==0">Usuario</span>
+                                    </td>
+                                    <td class="text-center">
+                                        <button style="width:120px;" type="button" class="btn btn-sm btn-primary m-1" data-bs-toggle="modal" data-bs-target="#modal-add" (click)='edit(data)'><i class="fas fa-edit"></i> Atender</button>
+                                    </td>
+                                </tr>
+                            </ng-container>
+            
+                            <ng-container *ngIf="!ready">
+                                <tr>
+                                    <td colspan="7" class="pt-3 pb-3">
+                                        <div id="load_table" class="w-100">
+                                            <div class="text-center">
+                                                <div class="spinner-border text-primary" role="status">
+                                                <span class="sr-only">Loading...</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </ng-container>
+    
+                            <ng-container *ngIf="ready && solicitudes.length==0">
+                                <tr>
+                                    <td>-</td>
+                                    <td>No hay datos</td>
+                                    <td>No hay datos</td>
+                                    <td>No hay datos</td>
+                                    <td>No hay datos</td>
+                                </tr>
+                            </ng-container>
+                            
+                        </tbody>
+                    </table>
+                </div>
+
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-end">
+                      <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Anterior</a>
+                      </li>
+                      
+                      <li *ngFor="let page of pages" class="page-item" [ngClass]="{'active': pageActive == page.pagina}" #elemPagination><a class="page-link" (click)="getSolicitudes(page.pagina)" style="cursor:pointer;">{{page.pagina}}</a></li>
+    
+                      <li class="page-item disabled">
+                        <a class="page-link" href="#">Siguiente</a>
+                      </li>
+                    </ul>
+                </nav>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- MODAL ADD -->
+<!-- MODAL ADD -->
+<div class="modal fade bd-example-modal-sm" style="z-index: 5000;" id="modal-add" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+
+            <div class="container-fluid modal-body" style="padding:15px;">
+                <div class="row justify-content-center"> 
+                    <div class="col-md-12">
+
+                                <button type="button" class="btn btn-danger" style="position:absolute;right:13px;padding:6px 15px;" (click)="closeForm(modalForm)"><i class="fas fa-lg fa-times"></i></button>
+                                
+                                <form #modalForm="ngForm" class="formulario-modal" enctype="multipart/form-data" (submit)="submit(modalForm)" novalidate="">
+                                    <h4 *ngIf="!solicitud.id" style="margin-bottom:18px;width:80%;">REGISTRAR SOLICITUD</h4>
+                                    <h4 *ngIf="solicitud.id" style="margin-bottom:18px;width:80%;">MODIFICAR SOLICITUD</h4>
+
+                                    <nav>
+                                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                            <a class="nav-item nav-link active disabled" id="nav-general-tab" data-toggle="tab" href="#nav-general" role="tab" aria-controls="nav-general" aria-selected="true">Datos de la Solicitud</a>
+                                        </div>
+                                    </nav>
+                                    <div class="row justify-content-center mt-3">   
+                                        <div class="tab-content row justify-content-center col-12" id="nav-tabContent">
+                                            <div class="col-md-12 col-12 tab-pane fade show active" id="nav-general" role="tabpanel" aria-labelledby="nav-general-tab">
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="form-group row mb-0">
+                                                            <label for="inputNOM" class="col-lg-3 col-md-4 col-sm-5 col-12 col-form-label">Estado de la Solicitud</label>
+                                                            <div class="col-lg-9 col-md-8 col-sm-7 col-12">
+                                                                <select class="form-select form-select-sm w-auto" aria-label="Default select example" placeholder="Selecciona la respuesta" [(ngModel)]="solicitud.pag_estado" name="pag_estado" #pag_estado required>
+                                                                    <option value="" selected disabled>Selecciona la respuesta</option>
+                                                                    <option value="0">Usuario</option>
+                                                                    <option value="1">Administrador</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6 mt-3">
+                                                        <div class="border p-2 h-100">    
+                                                            <h5>Validar</h5>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault1">
+                                                                <label class="form-check-label" for="flexCheckDefault1">
+                                                                  Se encontro fisicamente la HC
+                                                                </label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked2">
+                                                                <label class="form-check-label" for="flexCheckChecked2">
+                                                                  Se ordeno cronologicamente la HC
+                                                                </label>
+                                                            </div>
+                                                            <div class="text-center mb-1">
+                                                                <button type="button" class="btn btn-sm btn-secondary">Imprimir Hoja de Afiliación</button>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked3">
+                                                                <label class="form-check-label" for="flexCheckChecked3">
+                                                                  Se rotulo a HC
+                                                                </label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked4">
+                                                                <label class="form-check-label" for="flexCheckChecked4">
+                                                                  Se cruzo la infomación de la HC
+                                                                </label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked5">
+                                                                <label class="form-check-label" for="flexCheckChecked5">
+                                                                  Se realizó el control de calidad
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6 mt-3">
+                                                        <div class="border p-2 h-100">
+                                                            <h5>Firmas</h5>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault1">
+                                                                <label class="form-check-label" for="flexCheckDefault1">
+                                                                  Emergencia
+                                                                </label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked2">
+                                                                <label class="form-check-label" for="flexCheckChecked2">
+                                                                  Hospitalización
+                                                                </label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked3">
+                                                                <label class="form-check-label" for="flexCheckChecked3">
+                                                                  UCI
+                                                                </label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked4">
+                                                                <label class="form-check-label" for="flexCheckChecked4">
+                                                                  Aneosteología
+                                                                </label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked5">
+                                                                <label class="form-check-label" for="flexCheckChecked5">
+                                                                  Enfermería
+                                                                </label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault1">
+                                                                <label class="form-check-label" for="flexCheckDefault1">
+                                                                  Salud Mental
+                                                                </label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked2">
+                                                                <label class="form-check-label" for="flexCheckChecked2">
+                                                                  Infectología
+                                                                </label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked3">
+                                                                <label class="form-check-label" for="flexCheckChecked3">
+                                                                  Laboratorio
+                                                                </label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked4">
+                                                                <label class="form-check-label" for="flexCheckChecked4">
+                                                                  Rayos X
+                                                                </label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked5">
+                                                                <label class="form-check-label" for="flexCheckChecked5">
+                                                                  Farmacia
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-6 mt-3">
+                                                        <div class="border p-2 h-100">    
+                                                            <h5>Solicitud HC</h5>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                                                                <label class="form-check-label" for="flexRadioDefault1">
+                                                                  Digital
+                                                                </label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+                                                                <label class="form-check-label" for="flexRadioDefault2">
+                                                                  Físico
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 mt-3">
+                                                        <div class="border p-2 h-100">    
+                                                            <h5>Fedatario</h5>
+                                                            <div class="form-group row mb-3">
+                                                                <div class="col-8">
+                                                                    <input type="text" class="form-control form-control-sm" placeholder=""  autocomplete="off" [disabled]="!btn" [(ngModel)]="solicitud.pac_nombre" name="pac_nombre" #pac_nombre readonly required>
+                                                                </div>
+                                                                <div class="col-4">
+                                                                    <button type="button" class="btn w-100 btn-success btn-sm btn_modals">Agregar</button>
+                                                                </div>
+                                                            </div>
+                                                            <div class="position-relative">
+                                                                <p class="text-center mb-1">Calzada Suarez, Amelia</p>
+                                                                <p class="text-center mb-1">Calzada Suarez, Amelia</p>
+                                                            </div>  
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-12 mt-3">
+                                                        <div class="border p-2 h-100">    
+                                                            <h5>Pago</h5>
+                                                            <div class="row">
+                                                                <div class="col-8">
+                                                                    <div class="row justify-content-center">
+                                                                        <div class="col-6">
+                                                                            <div class="form-group row mb-2">
+                                                                                <label for="inputNOM" class="col-12 col-form-label">Cantidad de Folios Físicos</label>
+                                                                                <div class="col-12">
+                                                                                    <input type="text" class="form-control form-control-sm" placeholder=""  autocomplete="off" [disabled]="!btn" [(ngModel)]="solicitud.pac_dni" name="pac_dni" #pac_dni required>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-6">
+                                                                            <div class="form-group row mb-2">
+                                                                                <label for="inputNOM" class="col-12 col-form-label">Otros Gastos S/.</label>
+                                                                                <div class="col-12">
+                                                                                    <input type="text" class="form-control form-control-sm" placeholder=""  autocomplete="off" [disabled]="!btn" [(ngModel)]="solicitud.pac_dni" name="pac_dni" #pac_dni required>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-6 mb-1">
+                                                                            <button type="button" class="btn w-100 btn-success btn-sm btn_modals">Calcular Pago</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-4">
+                                                                    <h3 class="text-center mt-3">S/. 10.00</h3>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-12 mt-3">
+                                                        <div class="border p-2 h-100">    
+                                                            <h5>Observación</h5>
+                                                            <textarea class="form-control form-control-sm" placeholder="" rows="5" [disabled]="!btn" [(ngModel)]="solicitud.pag_obs" name="pag_obs" #pag_obs>
+                                                            </textarea>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                             
+
+                                    <!--
+                                    <nav class="mt-2">
+                                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                            <a class="nav-item nav-link active disabled" id="nav-general-tab" data-toggle="tab" href="#nav-general" role="tab" aria-controls="nav-general" aria-selected="true">Pago</a>
+                                        </div>
+                                    </nav>
+                                    <div class="row justify-content-center">   
+                                        <div class="tab-content row justify-content-center col-12" id="nav-tabContent">
+                                            <div class="col-md-12 col-12 tab-pane fade show active" id="nav-general" role="tabpanel" aria-labelledby="nav-general-tab">
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group row mb-3">
+                                                            <label for="inputNOM" class="col-12 col-form-label">Filtrar Pago</label>
+                                                            <div class="col-12">
+                                                                <select class="form-select form-select-sm w-100 pe-5" aria-label="Default select example" placeholder="Selecciona la respuesta" [(ngModel)]="usuario.privilegios" name="privilegios" #privilegios>
+                                                                    <option value="" selected disabled>Selecciona la respuesta</option>
+                                                                    <option value="0">Usuario</option>
+                                                                    <option value="1">Administrador</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row mb-3">
+                                                            <label for="inputNOM" class="col-12 col-form-label">N° Pago</label>
+                                                            <div class="col-12">
+                                                                <input type="email" class="form-control form-control-sm" placeholder="Correo" [disabled]="!btn" [(ngModel)]="usuario.email" name="correo" #correo readonly>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group row mb-3">
+                                                            <label for="inputPRIV" class="col-12 col-form-label">Fecha de Pago</label>
+                                                            <div class="col-12">
+                                                                <input type="email" class="form-control form-control-sm" placeholder="Correo" [disabled]="!btn" [(ngModel)]="usuario.email" name="correo" #correo readonly>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row mb-3">
+                                                            <label for="inputMOD" class="col-12 col-form-label">Solicitud</label>
+                                                            <div class="col-12">
+                                                                <textarea class="form-control form-control-sm" placeholder="" row="4" [disabled]="!btn" [(ngModel)]="usuario.email" name="correo" #correo readonly>
+                                                                </textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    -->                 
+                                    
+                                    <div class="w-100" style="height:12px;"></div>
+                                    <div class="msg-ajax-result"></div>
+
+
+                                    <div class="row justify-content-center">
+                                        <div class="col-sm-4 col-12 mb-2">
+                                            <button *ngIf="btn" type="submit" class="btn w-100 btn-success btn_modals" [disabled]="!modalForm.form.valid"><i class="far fa-lg fa-save"></i> Guardar</button>
+                                            <button *ngIf="!btn" type="button" class="btn w-100 btn-success btn_modals" disabled><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Cargando</button>
+                                        </div>
+                                        <div class="col-sm-4 col-12 mb-2 modal-btn-cont d-none">
+                                           
+                                        </div>
+                                        <div class="col-sm-4 col-12 mb-2">
+                                            <button type="button" class="btn w-100 btn-warning btn_modals" (click)="closeForm(modalForm)"><i class="fas fa-lg fa-ban"></i> Cancelar</button>
+                                        </div>
+                                    </div>
+
+
+                                </form>
+                                
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<!-- Modal Confirm-->
+<div class="modal fade" id="modal-confirm" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h4 class="modal-title" id="exampleModalLabel">Confirmar accion</h4>
+            <button type="button" class="btn btn-danger" style="position:absolute;right:13px;padding:6px 15px;" data-bs-dismiss="modal" aria-label="Close"><i class="fas fa-lg fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                ¿Esta seguro que desea eliminar el elemento?
+            </div>
+            <div class="modal-footer p-1">
+                <div class="row w-100">
+                    <div class="col-sm-6">
+                        <button *ngIf="btn" type="button" class="btn w-100 btn-danger m-1" (click)='eliminar({})'>Si</button>
+                        <button *ngIf="!btn" type="button" class="btn w-100 btn-danger m-1" (click)='eliminar({})'  disabled><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Cargando</button>
+                    </div>
+                    <div class="col-sm-6">
+                        <button type="button" class="btn w-100 btn-secondary m-1" (click)="closeConfirm()" [disabled]="!btn">No</button>
+                    </div>
+                </div>  
+            </div>
+        </div>
+    </div>
+</div>
