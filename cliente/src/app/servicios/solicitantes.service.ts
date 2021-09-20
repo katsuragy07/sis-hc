@@ -34,19 +34,17 @@ export class SolicitantesService {
     return this.http.get<Solicitud[]>(this.URI+'solicitantes/listar.php',{params: params});
   }
 
-  getDataFilter(index: string, type: string){
+  getDataFilter(index: string){
     let params = new HttpParams();
     params = params.append('index', index);
-    params = params.append('type', type);
-    return this.http.get<[]>(this.URI+'solicitantes/buscar.php',{params: params});
+    return this.http.get<any>(this.URI+'solicitantes/buscar.php',{params: params});
   }
 
   postData(get_data: Solicitante){
     console.log(get_data);
     const form_data = new FormData();
-    form_data.append('authorization', this.getToken());
+    //form_data.append('authorization', this.getToken());
     form_data.append('data', JSON.stringify(get_data));
-    //alert(JSON.stringify(get_data))
     return this.http.post(this.URI+'solicitantes/registrar.php',form_data);
   }
 

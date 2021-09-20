@@ -10,7 +10,7 @@
 
 
    
-    $query = "SELECT * FROM solicitante WHERE nro_documento = '$clave';";
+    $query = "SELECT * FROM parentesco WHERE descripcion LIKE '%$clave%' order by id_parentesco desc;";
     
 
  
@@ -27,9 +27,10 @@
     if (0 !== sqlsrv_num_rows($result)){
         while ($row = sqlsrv_fetch_array($result)) {
  
-            $json = array(
-                'id' => $row['id_solicitante'],
-                'nombre_completo' => $row['nombre_completo']
+            $json[] = array(
+                'id' => $row['id_parentesco'],
+                'descripcion' => $row['descripcion'],
+                'estado' => $row['estado']
             );   
         }
     }

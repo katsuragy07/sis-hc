@@ -1,21 +1,21 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { GlobalConstants } from 'src/app/common/global-constans';
-import { Paciente } from "../models/paciente.model";
+import { Parentesco } from '../models/parentesco.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class PacientesService {
+export class ParentescoService {
 
   URI = GlobalConstants.apiURL;
 
   constructor(private http:HttpClient) { }
 
-  getDataFilter(index: string){
+
+  getData(){
     let params = new HttpParams();
-    params = params.append('index', index);
-    return this.http.get<any>(this.URI+'paciente/buscar.php',{params: params});
+    return this.http.get<Parentesco[]>(this.URI+'parentesco/listar.php',{params: params});
   }
 
 }

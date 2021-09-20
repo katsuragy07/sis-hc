@@ -6,14 +6,10 @@
 
     require_once "../connect.php";
 
-    $clave = $_GET['index'];
 
 
-   
-    $query = "SELECT * FROM solicitante WHERE nro_documento = '$clave';";
-    
+    $query = "EXEC dbo.pr_s_parentesco";
 
- 
     $result = sqlsrv_query($conn, $query, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
 
 
@@ -21,22 +17,20 @@
         die( print_r( sqlsrv_errors(), true));
     }
 
-
     $json = array();
-    
+
+
     if (0 !== sqlsrv_num_rows($result)){
         while ($row = sqlsrv_fetch_array($result)) {
- 
-            $json = array(
-                'id' => $row['id_solicitante'],
-                'nombre_completo' => $row['nombre_completo']
+            $json[] = array(
+                'id' => $row['id'],
+                'descripcion' => $row['descripcion']
             );   
         }
     }
-    
+
+
     echo json_encode($json);
-
-
 
 
 

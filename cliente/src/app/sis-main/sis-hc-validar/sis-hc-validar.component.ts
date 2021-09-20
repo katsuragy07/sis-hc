@@ -31,10 +31,10 @@ export class SisHcValidarComponent implements OnInit {
     this.solicitud = new Solicitud();
     this.solicitante = new Solicitante();
     this.btn = true;
-    this.ready = false;
+    this.ready = true;
     this.pageActive = 1;
     this.pageSize = 15;
-    this.paginar();
+    //this.paginar();
   }
 
   ngOnInit(): void {

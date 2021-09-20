@@ -14,6 +14,8 @@ export class Solicitud{
     pag_nro: string;
     pag_fecha: string;
     pag_obs: string;
+
+
     constructor(){
         this.id = "";
         this.sol_id = "";
@@ -22,7 +24,6 @@ export class Solicitud{
         this.sol_parentesco = "";
         this.sol_solicitud = "";
         this.pac_id = "";
-        this.pac_dni = "";
         this.pac_nombre = "";
         this.pac_situacion = "";
         this.pac_fecha = "";
