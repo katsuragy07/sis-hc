@@ -20,7 +20,7 @@ export class AuthService {
 
   logout(){
     this.removeToken();
-    window.location.href = "https://login.microsoftonline.com/57c17caf-c500-4ffc-9976-f85fc6c66d47/oauth2/v2.0/logout?%20post_logout_redirect_uri=https://oic.uncp.edu.pe";
+    this.router.navigate(['/login']);
   }
 
 

@@ -9,14 +9,13 @@
         <button style="width:225px;" type="button" class="btn btn-success m-1" data-bs-toggle="modal" data-bs-target="#modal-add-solicitante" (click)="resetForm(modalForm)"><i class="fas fa-plus-circle"></i> Nuevo Solicitante</button>
         -->
 
-        <form class="row mt-2" #searchForm="ngForm" (submit)="filtrar(search.value, search_type.value)">
+        <form class="row mt-2" #searchForm="ngForm" (submit)="filtrarSolicitudes(search.value, search_type.value)">
             <div class="col-md-4 col-sm-4 mb-2">
                 <div class="form-group row mb-0">
                     <label for="inputNOM" class="col-12 col-form-label">Filtrar Solicitud</label>
                     <div class="col-12">
-                        <select class="form-select" aria-label="Default select example" #search_type (change)="filtrar(search.value, search_type.value);">
-                            <option value="name" selected>Nombre</option>
-                            <option value="email">Correo</option>
+                        <select class="form-select" aria-label="Default select example" #search_type (change)="filtrarSolicitudes(search.value, search_type.value);">
+                            <option value="estado" selected>Estado</option>
                         </select>
                     </div>
                 </div>
@@ -25,7 +24,11 @@
                 <div class="form-group row mb-0">
                     <label for="inputNOM" class="col-12 col-form-label">Buscar</label>
                     <div class="col-12">
-                        <input type="text" class="form-control" placeholder="Buscar Usuario" aria-label="Search" #search (keyup)="filtrar(search.value, search_type.value);">
+                        <select class="form-select form-select w-100 pe-5" aria-label="Default select example" placeholder="Buscar estado" aria-label="Search" #search (input)="filtrarSolicitudes(search.value, search_type.value);">
+                            <option value="" selected disabled>Selecciona la respuesta</option>
+                            <option *ngFor="let data of estado_solicitudes; let i = index" value="{{data.id}}">{{data.descripcion}}</option>
+                        </select>
+                        <!--<input type="text" class="form-control" placeholder="Buscar Usuario" aria-label="Search" #search (keyup)="filtrarSolicitudes(search.value, search_type.value);">-->
                     </div>
                 </div>
             </div>
@@ -57,106 +60,18 @@
     
                             <ng-container *ngIf="ready">
 
-                                <tr class="align-middle">
-                                    <td class="text-center">-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td class="text-center">
-                                        <button style="width:120px;" type="button" class="btn btn-sm btn-primary m-1" data-bs-toggle="modal" data-bs-target="#modal-add" (click)='edit(0)'><i class="fas fa-edit"></i> Atender</button>
-                                    </td>
-                                </tr>
-                                <tr class="align-middle">
-                                    <td class="text-center">-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td class="text-center">
-                                        <button style="width:120px;" type="button" class="btn btn-sm btn-primary m-1" data-bs-toggle="modal" data-bs-target="#modal-add" (click)='edit(0)'><i class="fas fa-edit"></i> Atender</button>
-                                    </td>
-                                </tr>
-                                <tr class="align-middle">
-                                    <td class="text-center">-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td class="text-center">
-                                        <button style="width:120px;" type="button" class="btn btn-sm btn-primary m-1" data-bs-toggle="modal" data-bs-target="#modal-add" (click)='edit(0)'><i class="fas fa-edit"></i> Atender</button>
-                                    </td>
-                                </tr>
-                                <tr class="align-middle">
-                                    <td class="text-center">-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td class="text-center">
-                                        <button style="width:120px;" type="button" class="btn btn-sm btn-primary m-1" data-bs-toggle="modal" data-bs-target="#modal-add" (click)='edit(0)'><i class="fas fa-edit"></i> Atender</button>
-                                    </td>
-                                </tr>
-                                <tr class="align-middle">
-                                    <td class="text-center">-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td class="text-center">
-                                        <button style="width:120px;" type="button" class="btn btn-sm btn-primary m-1" data-bs-toggle="modal" data-bs-target="#modal-add" (click)='edit(0)'><i class="fas fa-edit"></i> Atender</button>
-                                    </td>
-                                </tr>
-                                <tr class="align-middle">
-                                    <td class="text-center">-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td class="text-center">
-                                        <button style="width:120px;" type="button" class="btn btn-sm btn-primary m-1" data-bs-toggle="modal" data-bs-target="#modal-add" (click)='edit(0)'><i class="fas fa-edit"></i> Atender</button>
-                                    </td>
-                                </tr>
-                                
                                 <tr class="align-middle" *ngFor="let data of solicitudes; let i = index" >
                                     <td class="text-center">{{i+1}}</td>
-                                    <td>{{data.name}}</td>
-                                    <td>{{data.email}}</td>
-                                    <td>{{data.email}}</td>
-                                    <td>{{data.email}}</td>
-                                    <td>{{data.email}}</td>
-                                    <td>{{data.email}}</td>
-                                    <td>{{data.email}}</td>
-                                    <td>
-                                        <span class="badge rounded-pill bg-dark" *ngIf="data.privilegios==1">Administrador</span>
-                                        <span class="badge rounded-pill bg-secondary" *ngIf="data.privilegios==0">Usuario</span>
-                                    </td>
+                                    <td>{{data.expediente_sgd}}</td>
+                                    <td>{{data.sol_nombre}}</td>
+                                    <td>{{data.pac_nombre}}</td>
+                                    <td class="text-center">{{data.pac_situacion}}</td>
+                                    <td class="text-center">{{data.pac_fecha_situacion}}</td>
+                                    <td>{{data.tipo_solicitud}}</td>
+                                    <td>{{data.estado_solicitud}}</td>
+                                    <td class="text-center"></td>
                                     <td class="text-center">
-                                        <button style="width:120px;" type="button" class="btn btn-sm btn-primary m-1" data-bs-toggle="modal" data-bs-target="#modal-add" (click)='edit(data)'><i class="fas fa-edit"></i> Atender</button>
+                                        <button style="width:120px;" type="button" class="btn btn-sm btn-primary m-1" data-bs-toggle="modal" data-bs-target="#modal-add" (click)='editSolicitudes(data)' [disabled]="data.id_pago"><i class="fas fa-edit"></i> Atender</button>
                                     </td>
                                 </tr>
                             </ng-container>
@@ -223,9 +138,9 @@
 
                                 <button type="button" class="btn btn-danger" style="position:absolute;right:13px;padding:6px 15px;" (click)="closeForm(modalForm)"><i class="fas fa-lg fa-times"></i></button>
                                 
-                                <form #modalForm="ngForm" class="formulario-modal" enctype="multipart/form-data" (submit)="submit(modalForm)" novalidate="">
-                                    <h4 *ngIf="!solicitud.id" style="margin-bottom:18px;width:80%;">REGISTRAR SOLICITUD</h4>
-                                    <h4 *ngIf="solicitud.id" style="margin-bottom:18px;width:80%;">MODIFICAR SOLICITUD</h4>
+                                <form #modalForm="ngForm" class="formulario-modal" enctype="multipart/form-data" (submit)="putSolicitudes(modalForm)" novalidate="">
+                                    <h4 *ngIf="!solicitud.id" style="margin-bottom:18px;width:80%;">ATENDER SOLICITUD</h4>
+                                    <h4 *ngIf="solicitud.id" style="margin-bottom:18px;width:80%;">ATENDER SOLICITUD</h4>
 
                                     <nav>
                                         <div class="nav nav-tabs" id="nav-tab" role="tablist">
@@ -240,10 +155,9 @@
                                                         <div class="form-group row mb-0">
                                                             <label for="inputNOM" class="col-lg-3 col-md-4 col-sm-5 col-12 col-form-label">Estado de la Solicitud</label>
                                                             <div class="col-lg-9 col-md-8 col-sm-7 col-12">
-                                                                <select class="form-select form-select-sm w-auto" aria-label="Default select example" placeholder="Selecciona la respuesta" [(ngModel)]="solicitud.pag_estado" name="pag_estado" #pag_estado required>
+                                                                <select class="form-select form-select-sm w-100 pe-5" aria-label="Default select example" placeholder="Estado" autocomplete="off" [disabled]="!btn" [(ngModel)]="solicitud.id_estado_solicitud" name="id_estado_solicitud" #id_estado_solicitud>
                                                                     <option value="" selected disabled>Selecciona la respuesta</option>
-                                                                    <option value="0">Usuario</option>
-                                                                    <option value="1">Administrador</option>
+                                                                    <option *ngFor="let data of estado_solicitudes; let i = index" value="{{data.id}}">{{data.descripcion}}</option>
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -252,13 +166,13 @@
                                                         <div class="border p-2 h-100">    
                                                             <h5>Validar</h5>
                                                             <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault1">
+                                                                <input class="form-check-input" type="checkbox" id="flexCheckDefault1" [checked]="solicitud.encontro_fisico" (change)="encontro_fisico.checked ? solicitud.encontro_fisico=1 : solicitud.encontro_fisico=0" name="encontro_fisico" #encontro_fisico>
                                                                 <label class="form-check-label" for="flexCheckDefault1">
                                                                   Se encontro fisicamente la HC
                                                                 </label>
                                                             </div>
                                                             <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked2">
+                                                                <input class="form-check-input" type="checkbox" id="flexCheckChecked2" [checked]="solicitud.orden_cronologico" (change)="orden_cronologico.checked ? solicitud.orden_cronologico=1 : solicitud.orden_cronologico=0" name="orden_cronologico" #orden_cronologico>
                                                                 <label class="form-check-label" for="flexCheckChecked2">
                                                                   Se ordeno cronologicamente la HC
                                                                 </label>
@@ -267,19 +181,19 @@
                                                                 <button type="button" class="btn btn-sm btn-secondary">Imprimir Hoja de Afiliación</button>
                                                             </div>
                                                             <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked3">
+                                                                <input class="form-check-input" type="checkbox" id="flexCheckChecked3" [checked]="solicitud.rotulo" (change)="rotulo.checked ? solicitud.rotulo=1 : solicitud.rotulo=0" name="rotulo" #rotulo>
                                                                 <label class="form-check-label" for="flexCheckChecked3">
                                                                   Se rotulo a HC
                                                                 </label>
                                                             </div>
                                                             <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked4">
+                                                                <input class="form-check-input" type="checkbox" id="flexCheckChecked4" [checked]="solicitud.cruce_informacion" (change)="cruce_informacion.checked ? solicitud.cruce_informacion=1 : solicitud.cruce_informacion=0" name="cruce_informacion" #cruce_informacion>
                                                                 <label class="form-check-label" for="flexCheckChecked4">
                                                                   Se cruzo la infomación de la HC
                                                                 </label>
                                                             </div>
                                                             <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked5">
+                                                                <input class="form-check-input" type="checkbox" id="flexCheckChecked5" [checked]="solicitud.control_calidad" (change)="control_calidad.checked ? solicitud.control_calidad=1 : solicitud.control_calidad=0" name="control_calidad" #control_calidad>
                                                                 <label class="form-check-label" for="flexCheckChecked5">
                                                                   Se realizó el control de calidad
                                                                 </label>
@@ -290,61 +204,61 @@
                                                         <div class="border p-2 h-100">
                                                             <h5>Firmas</h5>
                                                             <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox" value="" id="fr_1">
+                                                                <input class="form-check-input" type="checkbox" id="fr_1" [checked]="solicitud.f_emergencia" (change)="f_emergencia.checked ? solicitud.f_emergencia = 1 : solicitud.f_emergencia = 0" name="f_emergencia" #f_emergencia>
                                                                 <label class="form-check-label" for="fr_1">
                                                                   Emergencia
                                                                 </label>
                                                             </div>
                                                             <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox" value="" id="fr_2">
+                                                                <input class="form-check-input" type="checkbox" id="fr_2" [checked]="solicitud.f_hospitalizacion" (change)="f_hospitalizacion.checked ? solicitud.f_hospitalizacion = 1 : solicitud.f_hospitalizacion = 0" name="f_hospitalizacion" #f_hospitalizacion>
                                                                 <label class="form-check-label" for="fr_2">
                                                                   Hospitalización
                                                                 </label>
                                                             </div>
                                                             <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox" value="" id="fr_3">
+                                                                <input class="form-check-input" type="checkbox" id="fr_3" [checked]="solicitud.f_uci" (change)="f_uci.checked ? solicitud.f_uci = 1 : solicitud.f_uci = 0" name="f_uci" #f_uci>
                                                                 <label class="form-check-label" for="fr_3">
                                                                   UCI
                                                                 </label>
                                                             </div>
                                                             <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox" value="" id="fr_4">
+                                                                <input class="form-check-input" type="checkbox" id="fr_4" [checked]="solicitud.f_anestesio" (change)="f_anestesio.checked ? solicitud.f_anestesio = 1 : solicitud.f_anestesio = 0" name="f_anestesio" #f_anestesio>
                                                                 <label class="form-check-label" for="fr_4">
                                                                   Aneosteología
                                                                 </label>
                                                             </div>
                                                             <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox" value="" id="fr_5">
+                                                                <input class="form-check-input" type="checkbox" id="fr_5" [checked]="solicitud.f_enfermeria" (change)="f_enfermeria.checked ? solicitud.f_enfermeria = 1 : solicitud.f_enfermeria = 0" name="f_enfermeria" #f_enfermeria>
                                                                 <label class="form-check-label" for="fr_5">
                                                                   Enfermería
                                                                 </label>
                                                             </div>
                                                             <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox" value="" id="fr_6">
+                                                                <input class="form-check-input" type="checkbox" id="fr_6" [checked]="solicitud.f_salud_mental" (change)="f_salud_mental.checked ? solicitud.f_salud_mental = 1 : solicitud.f_salud_mental = 0" name="f_salud_mental" #f_salud_mental>
                                                                 <label class="form-check-label" for="fr_6">
                                                                   Salud Mental
                                                                 </label>
                                                             </div>
                                                             <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox" value="" id="fr_7">
+                                                                <input class="form-check-input" type="checkbox" id="fr_7" [checked]="solicitud.f_infectologia" (change)="f_infectologia.checked ? solicitud.f_infectologia = 1 : solicitud.f_infectologia = 0" name="f_infectologia" #f_infectologia>
                                                                 <label class="form-check-label" for="fr_7">
                                                                   Infectología
                                                                 </label>
                                                             </div>
                                                             <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox" value="" id="fr_8">
+                                                                <input class="form-check-input" type="checkbox" id="fr_8" [checked]="solicitud.f_laboratorio" (change)="f_laboratorio.checked ? solicitud.f_laboratorio = 1 : solicitud.f_laboratorio = 0" name="f_laboratorio" #f_laboratorio>
                                                                 <label class="form-check-label" for="fr_8">
                                                                   Laboratorio
                                                                 </label>
                                                             </div>
                                                             <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox" value="" id="fr_9">
+                                                                <input class="form-check-input" type="checkbox" id="fr_9" [checked]="solicitud.f_rx" (change)="f_rx.checked ? solicitud.f_rx = 1 : solicitud.f_rx = 0" name="f_rx" #f_rx>
                                                                 <label class="form-check-label" for="fr_9">
                                                                   Rayos X
                                                                 </label>
                                                             </div>
                                                             <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox" value="" id="fr_10">
+                                                                <input class="form-check-input" type="checkbox" id="fr_10" [checked]="solicitud.f_farmacia" (change)="f_farmacia.checked ? solicitud.f_farmacia = 1 : solicitud.f_farmacia = 0" name="f_farmacia" #f_farmacia>
                                                                 <label class="form-check-label" for="fr_10">
                                                                   Farmacia
                                                                 </label>
@@ -356,13 +270,13 @@
                                                         <div class="border p-2 h-100">    
                                                             <h5>Solicitud HC</h5>
                                                             <div class="form-check">
-                                                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                                                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" disabled [checked]="solicitud.id_estado_solicitud=='3' || solicitud.id_estado_solicitud=='4'">
                                                                 <label class="form-check-label" for="flexRadioDefault1">
                                                                   Digital
                                                                 </label>
                                                             </div>
                                                             <div class="form-check">
-                                                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+                                                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" disabled [checked]="solicitud.id_estado_solicitud=='1' || solicitud.id_estado_solicitud=='2'">
                                                                 <label class="form-check-label" for="flexRadioDefault2">
                                                                   Físico
                                                                 </label>
@@ -397,7 +311,7 @@
                                                                             <div class="form-group row mb-2">
                                                                                 <label for="inputNOM" class="col-12 col-form-label">Cantidad de Folios Físicos</label>
                                                                                 <div class="col-12">
-                                                                                    <input type="text" class="form-control form-control-sm" placeholder=""  autocomplete="off" [disabled]="!btn" [(ngModel)]="solicitud.pac_dni" name="pac_dni" #pac_dni required>
+                                                                                    <input type="text" class="form-control form-control-sm" placeholder=""  autocomplete="off" [disabled]="!btn" [(ngModel)]="solicitud.pag_folios" name="pag_folios" #pag_folios required>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -405,7 +319,7 @@
                                                                             <div class="form-group row mb-2">
                                                                                 <label for="inputNOM" class="col-12 col-form-label">Otros Gastos S/.</label>
                                                                                 <div class="col-12">
-                                                                                    <input type="text" class="form-control form-control-sm" placeholder=""  autocomplete="off" [disabled]="!btn" [(ngModel)]="solicitud.pac_dni" name="pac_dni" #pac_dni required>
+                                                                                    <input type="text" class="form-control form-control-sm" placeholder=""  autocomplete="off" [disabled]="!btn" [(ngModel)]="solicitud.pag_otros_gastos" name="pag_otros_gastos" #pag_otros_gastos required>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -415,7 +329,9 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-4">
-                                                                    <h3 class="text-center mt-3">S/. 10.00</h3>
+                                                                    <h4 class="text-center">TOTAL</h4>
+                                                                    <input type="text" class="form-control form-control-sm" placeholder=""  autocomplete="off" [disabled]="!btn" [(ngModel)]="solicitud.pag_total" name="pag_total" #pag_total required>
+                                                                    <!--<h3 class="text-center mt-3" [(ngModel)]="solicitud.pag_total" name="pag_total" #pag_total>S/. 10.00</h3>-->
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -424,7 +340,7 @@
                                                     <div class="col-12 mt-3">
                                                         <div class="border p-2 h-100">    
                                                             <h5>Observación</h5>
-                                                            <textarea class="form-control form-control-sm" placeholder="" rows="5" [disabled]="!btn" [(ngModel)]="solicitud.pag_obs" name="pag_obs" #pag_obs>
+                                                            <textarea class="form-control form-control-sm" placeholder="" rows="5" [disabled]="!btn" [(ngModel)]="solicitud.observacion" name="observacion" #observacion>
                                                             </textarea>
                                                         </div>
                                                     </div>

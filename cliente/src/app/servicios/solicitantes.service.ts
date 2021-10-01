@@ -41,7 +41,7 @@ export class SolicitantesService {
   }
 
   postData(get_data: Solicitante){
-    console.log(get_data);
+    //console.log(get_data);
     const form_data = new FormData();
     //form_data.append('authorization', this.getToken());
     form_data.append('data', JSON.stringify(get_data));

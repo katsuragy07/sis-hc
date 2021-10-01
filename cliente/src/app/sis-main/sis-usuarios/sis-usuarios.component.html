@@ -9,8 +9,8 @@
         <form class="row mt-2" #searchForm="ngForm" (submit)="filtrar(search.value, search_type.value)">
             <div class="col-md-3 col-sm-3 mb-2">
                 <select class="form-select" aria-label="Default select example" #search_type (change)="filtrar(search.value, search_type.value);">
-                    <option value="name" selected>Nombre</option>
-                    <option value="email">Correo</option>
+                    <option value="email" selected>Correo</option>
+                    <option value="nombre">Nombre</option>
                 </select>
             </div>
             <div class="col-md-6 col-sm-6 mb-2">
@@ -28,10 +28,10 @@
                         <thead class="table-dark">
                             <tr class="align-middle">
                                 <th class="pt-2 pb-2 pl-2 pr-2 text-center" scope="col">#</th>
-                                <th scope="col">NOMBRE</th>
-                                <th scope="col">CORREO</th>
-                                <th scope="col">NRO DOCUMENTO</th>
+                                <th scope="col">EMAIL</th>
                                 <th scope="col">PRIVILEGIOS</th>
+                                <th scope="col">NOMBRE</th>
+                                <th scope="col">APELLIDO</th>
                                 <th scope="col" class="text-center">OPERACIONES</th>
                             </tr>
                         </thead>
@@ -40,15 +40,17 @@
                             <ng-container *ngIf="ready">
                                 <tr class="align-middle" *ngFor="let data of usuarios; let i = index" >
                                     <td class="text-center">{{i+1}}</td>
-                                    <td>{{data.nombres}} {{data.apellidos}}</td>
                                     <td>{{data.email}}</td>
-                                    <td>{{data.nro_doc}}</td>
                                     <td class="text-center">
                                         <span class="badge rounded-pill bg-dark" *ngIf="data.privilegios==1">Administrador</span>
                                         <span class="badge rounded-pill bg-secondary" *ngIf="data.privilegios==0">Usuario</span>
                                     </td>
+                                    <td>{{data.nombre}}</td>
+                                    <td>{{data.apellido}}</td>
+                                    
                                     <td class="text-center">
                                         <button style="width:140px;" type="button" class="btn btn-sm btn-primary m-1" data-bs-toggle="modal" data-bs-target="#modal-add" (click)='edit(data)'><i class="fas fa-edit"></i> Modificar</button>
+                                        <button style="width:140px;" type="button" class="btn btn-sm btn-danger m-1" data-bs-toggle="modal" data-bs-target="#modal-confirm" (click)='eliminar(data)'><i class="fas fa-trash"></i> Eliminar</button>
                                     </td>
                                 </tr>
                             </ng-container>
@@ -87,7 +89,7 @@
                         <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Anterior</a>
                       </li>
                       
-                      <li *ngFor="let page of pages" class="page-item" [ngClass]="{'active': pageActive == page.pagina}" #elemPagination><a class="page-link" (click)="getUsuarios(page.pagina)" style="cursor:pointer;">{{page.pagina}}</a></li>
+                      <li *ngFor="let page of pages" class="page-item" [ngClass]="{'active': pageActive == page.pagina}" #elemPagination><a class="page-link" (click)="getData(page.pagina)" style="cursor:pointer;">{{page.pagina}}</a></li>
     
                       <li class="page-item disabled">
                         <a class="page-link" href="#">Siguiente</a>
@@ -140,67 +142,32 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group row mb-3">
-                                                    <label for="inputMOD" class="col-sm-3 col-form-label">Tipo de Documento</label>
+                                                    <label for="inputNOM" class="col-sm-3 col-form-label">Correo*</label>
                                                     <div class="col-sm-9">
-                                                        <select class="form-select w-100 pe-5" aria-label="Default select example" placeholder="Selecciona la respuesta" [(ngModel)]="usuario.id_tipo_doc" name="id_tipo_doc" #id_tipo_doc required>
-                                                            <option value="" selected disabled>Selecciona la respuesta</option>
-                                                            <option value="CAS">CAS</option>
-                                                            <option value="276">276</option>
-                                                        </select>
+                                                        <input type="email" class="form-control" placeholder="Correo" autocomplete="off" [disabled]="!btn" [(ngModel)]="usuario.email" name="correo" #correo>
                                                     </div>
                                                 </div>
                                                 <div class="form-group row mb-3">
-                                                    <label for="inputNOM" class="col-sm-3 col-form-label">Nro. Documento*</label>
+                                                    <label for="inputNOM" class="col-sm-3 col-form-label">Password*</label>
                                                     <div class="col-sm-9">
-                                                        <input type="text" class="form-control" placeholder="Nro de documento" [disabled]="!btn" [(ngModel)]="usuario.nro_doc" name="nro_doc" #nro_doc required>
+                                                        <input type="password" class="form-control" placeholder="Su contraseña" autocomplete="off" [disabled]="!btn" [(ngModel)]="usuario.pass" name="pass" #pass required>
+                                                    </div>
+                                                </div>
+    
+                                                <div class="form-group row mb-3">
+                                                    <label for="inputNOM" class="col-sm-3 col-form-label">Nombres</label>
+                                                    <div class="col-sm-9">
+                                                        <input type="text" class="form-control" placeholder="Nombre de la persona" autocomplete="off" [disabled]="!btn" [(ngModel)]="usuario.nombre" name="nombre" #nombre="ngModel">                                           
                                                     </div>
                                                 </div>
                                                 <div class="form-group row mb-3">
-                                                    <label for="inputNOM" class="col-sm-3 col-form-label">Nombres*</label>
+                                                    <label for="inputNOM" class="col-sm-3 col-form-label">Apellidos</label>
                                                     <div class="col-sm-9">
-                                                        <input type="text" class="form-control" [ngClass]="{'is-invalid': nombres.invalid && (nombres.dirty || nombres.touched)}" placeholder="Nombre de la persona" [disabled]="!btn" [(ngModel)]="usuario.nombres" name="nombres" #nombres="ngModel" required>                    
-                                                        <div *ngIf="nombres.invalid && (nombres.dirty || nombres.touched)" class="invalid-feedback">
-                                                            <div *ngIf="nombres.errors.required">
-                                                                Necesitas completar este campo.
-                                                            </div>
-                                                            <div *ngIf="nombres.errors.minlength">
-                                                                Name must be at least 4 characters long.
-                                                            </div>
-                                                            <div *ngIf="nombres.errors.forbiddenName">
-                                                                Name cannot be Bob.
-                                                            </div>
-                                                        </div>                             
+                                                        <input type="text" class="form-control" placeholder="Apellidos de la persona" autocomplete="off" [disabled]="!btn" [(ngModel)]="usuario.apellido" name="apellido" #apellido="ngModel">                                     
                                                     </div>
                                                 </div>
-                                                <div class="form-group row mb-3">
-                                                    <label for="inputNOM" class="col-sm-3 col-form-label">Apellidos*</label>
-                                                    <div class="col-sm-9">
-                                                        <input type="text" class="form-control" [ngClass]="{'is-invalid': apellidos.invalid && (apellidos.dirty || apellidos.touched)}" placeholder="Apellidos de la persona" [disabled]="!btn" [(ngModel)]="usuario.apellidos" name="apellidos" #apellidos="ngModel" required>                    
-                                                        <div *ngIf="apellidos.invalid && (apellidos.dirty || apellidos.touched)" class="invalid-feedback">
-                                                            <div *ngIf="apellidos.errors.required">
-                                                                Necesitas completar este campo.
-                                                            </div>
-                                                            <div *ngIf="apellidos.errors.minlength">
-                                                                Name must be at least 4 characters long.
-                                                            </div>
-                                                            <div *ngIf="apellidos.errors.forbiddenName">
-                                                                Name cannot be Bob.
-                                                            </div>
-                                                        </div>                             
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row mb-3">
-                                                    <label for="inputNOM" class="col-sm-3 col-form-label">Teléfono</label>
-                                                    <div class="col-sm-9">
-                                                        <input type="text" class="form-control" placeholder="Nro. de teléfono" [disabled]="!btn" [(ngModel)]="usuario.telefono" name="telefono" #telefono>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row mb-3">
-                                                    <label for="inputNOM" class="col-sm-3 col-form-label">Correo</label>
-                                                    <div class="col-sm-9">
-                                                        <input type="email" class="form-control" placeholder="Correo" [disabled]="!btn" [(ngModel)]="usuario.email" name="correo" #correo>
-                                                    </div>
-                                                </div>
+                                             
+                                                
                                             </div>
 
                                         </div>
@@ -231,6 +198,33 @@
                 </div>
             </div>
 
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal Confirm-->
+<div class="modal fade" id="modal-confirm" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h4 class="modal-title" id="exampleModalLabel">Confirmar accion</h4>
+            <button type="button" class="btn btn-danger" style="position:absolute;right:13px;padding:6px 15px;" data-bs-dismiss="modal" aria-label="Close"><i class="fas fa-lg fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                ¿Esta seguro que desea eliminar el elemento?
+            </div>
+            <div class="modal-footer p-1">
+                <div class="row w-100">
+                    <div class="col-sm-6">
+                        <button *ngIf="btn" type="button" class="btn w-100 btn-danger m-1" (click)='eliminar({})'>Si</button>
+                        <button *ngIf="!btn" type="button" class="btn w-100 btn-danger m-1" (click)='eliminar({})'  disabled><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Cargando</button>
+                    </div>
+                    <div class="col-sm-6">
+                        <button type="button" class="btn w-100 btn-secondary m-1" (click)="closeConfirm()" [disabled]="!btn">No</button>
+                    </div>
+                </div>  
+            </div>
         </div>
     </div>
 </div>

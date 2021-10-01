@@ -14,10 +14,10 @@ export class AuthGuard implements CanActivate {
   }
   
   async canActivate(){
-    return true;
+    //return true;
     await this.auth.validarLoginPromise().then(
       res => {
-        //console.log(res)
+        console.log(res)
         if(res.code==200){
           //console.log(res)
           //console.log("token valido");
@@ -30,13 +30,12 @@ export class AuthGuard implements CanActivate {
             if(res.code==404){
               //console.log("token invalido");
               this.auth.removeToken();
-              window.location.href = '/login.php';
-              //this.router.navigate(['/login.php']);
+              this.router.navigate(['/login']);
               return false;
             }else{
               console.log("error con la base de datos")
               this.auth.removeToken();
-              window.location.href = '/login.php';
+              this.router.navigate(['/login']);
               return false;
             }
           }

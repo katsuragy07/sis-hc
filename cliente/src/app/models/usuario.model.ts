@@ -2,22 +2,18 @@
 export class Usuario{
     id: string;
     privilegios: string;
-    nombres: string;
-    apellidos: string;
-    id_tipo_doc: string;
-    nro_doc: string;
-    telefono: string;
+    accesos: string;
     email: string;
-    estado: string;
+    pass: string;
+    nombre: string;
+    apellido: string;
     constructor(){
         this.id = "";
         this.privilegios = "";
-        this.nombres = "";
-        this.apellidos = "";
-        this.id_tipo_doc = "";
-        this.nro_doc = "";
-        this.telefono = "";
+        this.accesos = "";
         this.email = "";
-        this.estado = "";
+        this.pass = "";
+        this.nombre = "";
+        this.apellido = "";
     }
 }

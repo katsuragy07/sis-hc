@@ -4,19 +4,21 @@ import { ToastrService } from 'ngx-toastr';
 import { SolicitantesService } from "./../../servicios/solicitantes.service";
 import { ParentescoService } from "./../../servicios/parentesco.service";
 import { TipoSolicitudService } from 'src/app/servicios/tipo-solicitud.service';
+import { EstadoSolicitudService } from 'src/app/servicios/estado-solicitud.service';
 import { PacientesService } from 'src/app/servicios/pacientes.service';
 import { TipoDocumentoIdentidadService } from 'src/app/servicios/tipo-documento-identidad.service';
+import { SolicitudesService } from 'src/app/servicios/solicitudes.service';
 
 import { Usuario } from "./../../models/usuario.model";
 import { Solicitud } from "./../../models/solicitud.model";
 import { Solicitante } from "./../../models/solicitante.model";
 import { Parentesco } from './../../models/parentesco.model';
 import { TipoSolicitud } from './../../models/tipo-solicitud.model';
+import { EstadoSolicitud } from './../../models/estado-solicitud.model';
 import { Paciente } from './../../models/paciente.model';
 import { TipoDocumentoIdentidad } from './../../models/tipo-documento-identidad.model';
 
 import * as $ from 'jquery';
-import { SolicitudesService } from 'src/app/servicios/solicitudes.service';
 declare var $: any;
 
 @Component({
@@ -34,6 +36,8 @@ export class SisHcRegistroComponent implements OnInit {
   parentesco: Parentesco;
   tipo_solicitudes: TipoSolicitud[];
   tipo_solicitud: TipoSolicitud;
+  estado_solicitudes: EstadoSolicitud[];
+  estado_solicitud: EstadoSolicitud;
   solicitudes: Solicitud[];
   solicitud: Solicitud;
   solicitantes: Solicitante[];
@@ -46,7 +50,7 @@ export class SisHcRegistroComponent implements OnInit {
   pageActive: number;
   pageSize: number;
 
-  constructor(private tipoDocIdentidad_service: TipoDocumentoIdentidadService, private pacientes_service: PacientesService, private tipoSolicitud_service: TipoSolicitudService, private parentesco_service: ParentescoService, private solicitante_service: SolicitantesService, private solicitud_service: SolicitudesService, private toastr: ToastrService) { 
+  constructor(private tipoDocIdentidad_service: TipoDocumentoIdentidadService, private pacientes_service: PacientesService, private estadoSolicitud_service: EstadoSolicitudService, private tipoSolicitud_service: TipoSolicitudService, private parentesco_service: ParentescoService, private solicitante_service: SolicitantesService, private solicitud_service: SolicitudesService, private toastr: ToastrService) { 
     this.tipos_doc_identidad = [];
     this.tipo_doc_identidad = new TipoDocumentoIdentidad();
     this.pacientes = [];
@@ -55,6 +59,8 @@ export class SisHcRegistroComponent implements OnInit {
     this.parentesco = new Parentesco();
     this.tipo_solicitudes = [];
     this.tipo_solicitud = new TipoSolicitud();
+    this.estado_solicitudes = [];
+    this.estado_solicitud = new EstadoSolicitud();
     this.solicitudes = [];
     this.solicitud = new Solicitud();
     this.solicitantes = [];
@@ -63,10 +69,11 @@ export class SisHcRegistroComponent implements OnInit {
     this.ready = true;
     this.pageActive = 1;
     this.pageSize = 15;
-    //this.paginar();
+    this.paginar();
     this.getParentesco();
     this.getTipoSolicitud();
     this.getTipoDocIdentidad();
+    this.getEstadoSolicitud();
   }
 
   ngOnInit(): void {
@@ -124,6 +131,16 @@ export class SisHcRegistroComponent implements OnInit {
       }
     );
   }
+  getEstadoSolicitud(){
+    this.estadoSolicitud_service.getData().subscribe(
+      res=>{
+        this.estado_solicitudes = res;
+      },
+      err=>{
+        console.log(err);
+      }
+    );
+  }
   getTipoDocIdentidad(){
     this.tipoDocIdentidad_service.getData().subscribe(
       res=>{
@@ -140,14 +157,28 @@ export class SisHcRegistroComponent implements OnInit {
 
   filtrarPacientes(index: string){
     this.pacientes_service.getDataFilter(index).subscribe(
-      res =>{
+      res=>{
         this.pacientes = res;
-        console.log(res)
+        //this.codeList = res;
+        let find = this.pacientes.find(x => x?.nombres === index);
+        //console.log(find);
+        $("#inputUSER-hidden").val(find?.id);
+        this.solicitud.pac_id = find?.id;
+        this.solicitud.pac_nro_historia = find?.nro_historia;
+        this.solicitud.pac_situacion = find?.situacion;
+        this.solicitud.pac_fecha_situacion = find?.fecha_situacion;
+        if($("#inputUSER-hidden").val()==""){
+            $("#inputUSER").removeClass("is-valid");
+            $("#inputUSER").addClass("is-invalid");
+        }else{
+            $("#inputUSER").removeClass("is-invalid");
+            $("#inputUSER").addClass("is-valid");
+        }
       },
-      err => {
-        console.log(err);
+      err=>{
+        console.log(err)
       }
-    );
+    );   
   }
 
 
@@ -158,8 +189,9 @@ export class SisHcRegistroComponent implements OnInit {
     this.ready = false;
     this.pageActive = page;
     try{
-      this.solicitante_service.getData(this.pages[page-1]).subscribe(
+      this.solicitud_service.getData(this.pages[page-1]).subscribe(
         res=>{
+          //console.log(res)
           this.ready = true;
           this.solicitudes = res;
         },
@@ -170,7 +202,7 @@ export class SisHcRegistroComponent implements OnInit {
     }catch(error){
       console.log(error);
       this.pageActive -= 1;
-      this.solicitante_service.getData(this.pages[page-2]).subscribe(
+      this.solicitud_service.getData(this.pages[page-2]).subscribe(
         res=>{
           this.ready = true;
           this.solicitudes = res;
@@ -185,6 +217,7 @@ export class SisHcRegistroComponent implements OnInit {
 
   editSolicitudes(getElement: Solicitud){
     this.solicitud = Object.assign({},getElement);
+    //console.log(this.solicitud);
   }
 
   putSolicitudes(getForm){
@@ -212,9 +245,10 @@ export class SisHcRegistroComponent implements OnInit {
       );
     }else{
       this.btn = false;
-        this.solicitante_service.postData(this.solicitante).subscribe(
+        this.solicitud_service.postData(this.solicitud).subscribe(
           res => {
             console.log(res);
+            this.paginar();
             this.btn = true;
             if(res==200){
               this.toastr.success('Elemento registrado con exito.','Aviso');
@@ -242,8 +276,7 @@ export class SisHcRegistroComponent implements OnInit {
       this.paginar();
     }else{
       this.ready = false;
-      /*
-      this.solicitante_service.getDataFilter(index,type).subscribe(
+      this.solicitud_service.getDataFilter(index,type).subscribe(
         res =>{
           this.ready = true;
           this.solicitudes = res;
@@ -252,7 +285,6 @@ export class SisHcRegistroComponent implements OnInit {
           console.log(err);
         }
       );
-      */
     }
   }
 
@@ -262,7 +294,7 @@ export class SisHcRegistroComponent implements OnInit {
       this.solicitud = Object.assign({},getElement);
     }else{
       this.btn = false;
-      this.solicitante_service.deleteData(this.solicitante).subscribe(
+      this.solicitud_service.deleteData(this.solicitud).subscribe(
         res => {
           if(res==200){
             this.btn = true;
@@ -377,7 +409,9 @@ export class SisHcRegistroComponent implements OnInit {
         res =>{
           this.solicitante = res;
           this.solicitud.sol_nombre = res.nombre_completo;
-          console.log(res)
+          this.solicitud.sol_id = res.id;
+          //console.log(res)
+          //console.log(this.solicitud)
         },
         err => {
           console.log(err);

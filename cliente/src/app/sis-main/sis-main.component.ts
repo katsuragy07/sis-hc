@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router';
+import { Usuario } from "./../models/usuario.model";
+import { AuthService } from '../auth.service';
 
 import * as $ from 'jquery';
-import { AuthService } from '../auth.service';
 declare var $: any;
 
 @Component({
@@ -12,6 +13,8 @@ declare var $: any;
 })
 export class SisMainComponent implements OnInit {
 
+  usuario: Usuario;
+
   menuMin: boolean;
   menuActive: number;
   windowsX: number;
@@ -20,6 +23,9 @@ export class SisMainComponent implements OnInit {
   navXmin: number;
 
   constructor(private router: Router, private auth: AuthService){ 
+
+    this.usuario = auth.login_user;
+
     this.menuMin = false;
     switch(this.router.url){
       case "/usuarios": this.menuActive = 1; break;

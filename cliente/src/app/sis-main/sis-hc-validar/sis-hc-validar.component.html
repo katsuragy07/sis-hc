@@ -9,14 +9,13 @@
         <button style="width:225px;" type="button" class="btn btn-success m-1" data-bs-toggle="modal" data-bs-target="#modal-add-solicitante" (click)="resetForm(modalForm)"><i class="fas fa-plus-circle"></i> Nuevo Solicitante</button>
         -->
 
-        <form class="row mt-2" #searchForm="ngForm" (submit)="filtrar(search.value, search_type.value)">
+        <form class="row mt-2" #searchForm="ngForm" (submit)="filtrarSolicitudes(search.value, search_type.value)">
             <div class="col-md-4 col-sm-4 mb-2">
                 <div class="form-group row mb-0">
                     <label for="inputNOM" class="col-12 col-form-label">Filtrar Solicitud</label>
                     <div class="col-12">
-                        <select class="form-select" aria-label="Default select example" #search_type (change)="filtrar(search.value, search_type.value);">
-                            <option value="name" selected>Nombre</option>
-                            <option value="email">Correo</option>
+                        <select class="form-select" aria-label="Default select example" #search_type (change)="filtrarSolicitudes(search.value, search_type.value);">
+                            <option value="estado" selected>Estado</option>
                         </select>
                     </div>
                 </div>
@@ -25,7 +24,11 @@
                 <div class="form-group row mb-0">
                     <label for="inputNOM" class="col-12 col-form-label">Buscar</label>
                     <div class="col-12">
-                        <input type="text" class="form-control" placeholder="Buscar Usuario" aria-label="Search" #search (keyup)="filtrar(search.value, search_type.value);">
+                        <select class="form-select form-select w-100 pe-5" aria-label="Default select example" placeholder="Buscar estado" aria-label="Search" #search (input)="filtrarSolicitudes(search.value, search_type.value);">
+                            <option value="" selected disabled>Selecciona la respuesta</option>
+                            <option *ngFor="let data of estado_solicitudes; let i = index" value="{{data.id}}">{{data.descripcion}}</option>
+                        </select>
+                        <!--<input type="text" class="form-control" placeholder="Buscar Usuario" aria-label="Search" #search (keyup)="filtrarSolicitudes(search.value, search_type.value);">-->
                     </div>
                 </div>
             </div>
@@ -57,68 +60,18 @@
     
                             <ng-container *ngIf="ready">
 
-                                <tr class="align-middle">
-                                    <td class="text-center">-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td class="text-center">
-                                        <button style="width:120px;" type="button" class="btn btn-sm btn-primary m-1" data-bs-toggle="modal" data-bs-target="#modal-add" (click)='edit(0)'><i class="fas fa-edit"></i> Validar Pago</button>
-                                        <button style="width:120px;" type="button" class="btn btn-sm btn-danger m-1" data-bs-toggle="modal" data-bs-target="#modal-confirm" (click)='eliminar(0)'><i class="fas fa-trash"></i> Eliminar</button>
-                                    </td>
-                                </tr>
-                                <tr class="align-middle">
-                                    <td class="text-center">-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td class="text-center">
-                                        <button style="width:120px;" type="button" class="btn btn-sm btn-primary m-1" data-bs-toggle="modal" data-bs-target="#modal-add" (click)='edit(0)'><i class="fas fa-edit"></i> Validar Pago</button>
-                                        <button style="width:120px;" type="button" class="btn btn-sm btn-danger m-1" data-bs-toggle="modal" data-bs-target="#modal-confirm" (click)='eliminar(0)'><i class="fas fa-trash"></i> Eliminar</button>
-                                    </td>
-                                </tr>
-                                <tr class="align-middle">
-                                    <td class="text-center">-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td class="text-center">
-                                        <button style="width:120px;" type="button" class="btn btn-sm btn-primary m-1" data-bs-toggle="modal" data-bs-target="#modal-add" (click)='edit(0)'><i class="fas fa-edit"></i> Validar Pago</button>
-                                        <button style="width:120px;" type="button" class="btn btn-sm btn-danger m-1" data-bs-toggle="modal" data-bs-target="#modal-confirm" (click)='eliminar(0)'><i class="fas fa-trash"></i> Eliminar</button>
-                                    </td>
-                                </tr>
-
                                 <tr class="align-middle" *ngFor="let data of solicitudes; let i = index" >
                                     <td class="text-center">{{i+1}}</td>
-                                    <td>{{data.name}}</td>
-                                    <td>{{data.email}}</td>
-                                    <td>{{data.email}}</td>
-                                    <td>{{data.email}}</td>
-                                    <td>{{data.email}}</td>
-                                    <td>{{data.email}}</td>
-                                    <td>{{data.email}}</td>
-                                    <td>
-                                        <span class="badge rounded-pill bg-dark" *ngIf="data.privilegios==1">Administrador</span>
-                                        <span class="badge rounded-pill bg-secondary" *ngIf="data.privilegios==0">Usuario</span>
-                                    </td>
+                                    <td>{{data.expediente_sgd}}</td>
+                                    <td>{{data.sol_nombre}}</td>
+                                    <td>{{data.pac_nombre}}</td>
+                                    <td class="text-center">{{data.pac_situacion}}</td>
+                                    <td class="text-center">{{data.pac_fecha_situacion}}</td>
+                                    <td>{{data.tipo_solicitud}}</td>
+                                    <td>{{data.estado_solicitud}}</td>
+                                    <td class="text-center"></td>
                                     <td class="text-center">
-                                        <button style="width:120px;" type="button" class="btn btn-sm btn-primary m-1" data-bs-toggle="modal" data-bs-target="#modal-add" (click)='edit(data)'><i class="fas fa-edit"></i> Modificar</button>
-                                        <button style="width:120px;" type="button" class="btn btn-sm btn-danger m-1" data-bs-toggle="modal" data-bs-target="#modal-confirm" (click)='eliminar(data)'><i class="fas fa-trash"></i> Eliminar</button>
+                                        <button style="width:120px;" type="button" class="btn btn-sm btn-primary m-1" data-bs-toggle="modal" data-bs-target="#modal-add" (click)='editSolicitudes(data)'><i class="fas fa-edit"></i> Validar</button>
                                     </td>
                                 </tr>
                             </ng-container>
@@ -185,9 +138,9 @@
 
                                 <button type="button" class="btn btn-danger" style="position:absolute;right:13px;padding:6px 15px;" (click)="closeForm(modalForm)"><i class="fas fa-lg fa-times"></i></button>
                                 
-                                <form #modalForm="ngForm" class="formulario-modal" enctype="multipart/form-data" (submit)="submit(modalForm)" novalidate="">
-                                    <h4 *ngIf="!solicitud.id" style="margin-bottom:18px;width:80%;">REGISTRAR SOLICITUD</h4>
-                                    <h4 *ngIf="solicitud.id" style="margin-bottom:18px;width:80%;">MODIFICAR SOLICITUD</h4>
+                                <form #modalForm="ngForm" class="formulario-modal" enctype="multipart/form-data" (submit)="putSolicitudes(modalForm)" novalidate="">
+                                    <h4 *ngIf="!solicitud.id" style="margin-bottom:18px;width:80%;">VALIDAR PAGO</h4>
+                                    <h4 *ngIf="solicitud.id" style="margin-bottom:18px;width:80%;">VALIDAR PAGO</h4>
 
                                     <nav>
                                         <div class="nav nav-tabs" id="nav-tab" role="tablist">
@@ -202,13 +155,13 @@
                                                         <div class="form-group row mb-3">
                                                             <label for="inputNOM" class="col-12 col-form-label">DNI</label>
                                                             <div class="col-12">
-                                                                <input type="text" class="form-control form-control-sm" placeholder=""  autocomplete="off" [disabled]="!btn" [(ngModel)]="solicitud.sol_dni" name="sol_dni" #sol_dni readonly>
+                                                                <input type="text" class="form-control form-control-sm" placeholder=""  autocomplete="off" [disabled]="!btn" [(ngModel)]="solicitud.sol_dni" name="sol_dni" #sol_dni readonly (input)="filtrarSolicitantes(sol_dni.value);">
                                                             </div>
                                                         </div>
                                                         <div class="form-group row mb-3">
                                                             <label for="inputNOM" class="col-12 col-form-label">Apellidos y Nombres</label>
                                                             <div class="col-12">
-                                                                <input type="text" class="form-control form-control-sm" placeholder=""  autocomplete="off" [disabled]="!btn" [(ngModel)]="solicitud.sol_nombre" name="sol_nombre" #sol_nombre readonly>
+                                                                <input type="text" class="form-control form-control-sm" placeholder=""  autocomplete="off" [disabled]="!btn" [(ngModel)]="solicitud.sol_nombre" name="sol_nombre" #sol_nombre readonly >
                                                             </div>
                                                         </div>
                                                     </div>
@@ -216,20 +169,18 @@
                                                         <div class="form-group row mb-3">
                                                             <label for="inputPRIV" class="col-12 col-form-label">Parentesco</label>
                                                             <div class="col-12">
-                                                                <select class="form-select form-select-sm w-100 pe-5" aria-label="Default select example" placeholder="Selecciona la respuesta" [(ngModel)]="solicitud.sol_parentesco" name="sol_parentesco" #sol_parentesco readonly>
+                                                                <select class="form-select form-select-sm w-100 pe-5" aria-label="Default select example" placeholder="Selecciona la respuesta" [(ngModel)]="solicitud.sol_parentesco" name="sol_parentesco" #sol_parentesco disabled>
                                                                     <option value="" selected disabled>Selecciona la respuesta</option>
-                                                                    <option value="0">Usuario</option>
-                                                                    <option value="1">Administrador</option>
+                                                                    <option *ngFor="let data of parentescos; let i = index" value="{{data.id}}">{{data.descripcion}}</option>
                                                                 </select>
                                                             </div>
                                                         </div>
                                                         <div class="form-group row mb-3">
                                                             <label for="inputMOD" class="col-12 col-form-label">Solicitud</label>
                                                             <div class="col-12">
-                                                                <select class="form-select form-select-sm w-100 pe-5" aria-label="Default select example" placeholder="Selecciona la respuesta" [(ngModel)]="solicitud.sol_solicitud" name="sol_solicitud" #sol_solicitud readonly>
+                                                                <select class="form-select form-select-sm w-100 pe-5" aria-label="Default select example" placeholder="Selecciona la respuesta" [(ngModel)]="solicitud.sol_solicitud" name="sol_solicitud" #sol_solicitud disabled>
                                                                     <option value="" selected disabled>Selecciona la respuesta</option>
-                                                                    <option value="CAS">CAS</option>
-                                                                    <option value="276">276</option>
+                                                                    <option *ngFor="let data of tipo_solicitudes; let i = index" value="{{data.id}}">{{data.descripcion}}</option>
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -248,17 +199,15 @@
                                         <div class="tab-content row justify-content-center col-12" id="nav-tabContent">
                                             <div class="col-md-12 col-12 tab-pane fade show active" id="nav-general" role="tabpanel" aria-labelledby="nav-general-tab">
                                                 <div class="row">
-                                                    <div class="col-sm-6">
+                                                    <div class="col-sm-12">
                                                         <div class="form-group row mb-3">
-                                                            <label for="inputNOM" class="col-12 col-form-label">DNI</label>
+                                                            <label for="inputCLIENT" class="col-12 col-form-label">Apellidos y Nombres</label>
                                                             <div class="col-12">
-                                                                <input type="text" class="form-control form-control-sm" placeholder=""  autocomplete="off" [disabled]="!btn" [(ngModel)]="solicitud.pac_dni" name="pac_dni" #pac_dni readonly>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group row mb-3">
-                                                            <label for="inputNOM" class="col-12 col-form-label">Apellidos y Nombres</label>
-                                                            <div class="col-12">
-                                                                <input type="text" class="form-control form-control-sm" placeholder=""  autocomplete="off" [disabled]="!btn" [(ngModel)]="solicitud.pac_nombre" name="pac_nombre" #pac_nombre readonly readonly>
+                                                                <input list="usuarios_list" type="text" class="form-control form-control-sm" id="inputUSER" placeholder="Nombre del Paciente" autocomplete="off" [disabled]="!btn" [(ngModel)]="solicitud.pac_nombre" name="pac_nombre" #pac_nombre (input)="filtrarPacientes(pac_nombre.value);" readonly>         
+                                                                <input type="hidden" name="inputUSER-hidden" id="inputUSER-hidden" [(ngModel)]="solicitud.pac_id" name="pac_id" #pac_id="ngModel" required>
+                                                                <datalist id="usuarios_list">
+                                                                    <option *ngFor="let data of pacientes; let i = index" data-id="{{data.id}}" value="{{data.nombres}}" [ngValue]="data.id"></option>
+                                                                </datalist>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -266,20 +215,28 @@
                                                         <div class="form-group row mb-3">
                                                             <label for="inputPRIV" class="col-12 col-form-label">Situación</label>
                                                             <div class="col-12">
+                                                                <input type="text" class="form-control form-control-sm" placeholder="" [disabled]="!btn" [(ngModel)]="solicitud.pac_situacion" name="pac_situacion" #pac_situacion readonly>
+                                                                <!--
                                                                 <select class="form-select form-select-sm w-100 pe-5" aria-label="Default select example" placeholder="Selecciona la respuesta" [(ngModel)]="solicitud.pac_situacion" name="pac_situacion" #pac_situacion readonly>
                                                                     <option value="" selected disabled>Selecciona la respuesta</option>
-                                                                    <option value="0">Usuario</option>
-                                                                    <option value="1">Administrador</option>
+                                                                    <option value="Fallecido">Fallecido</option>
+                                                                    <option value="Hospitalizado">Hospitalizado</option>
+                                                                    <option value="Referido">Referido</option>
+                                                                    <option value="Alta Medica">Alta Medica</option>
                                                                 </select>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group row mb-3">
-                                                            <label for="inputMOD" class="col-12 col-form-label">Fecha de Situación</label>
-                                                            <div class="col-12">
-                                                                <input type="date" class="form-control form-control-sm" placeholder="" [disabled]="!btn" [(ngModel)]="solicitud.pac_fecha" name="pac_fecha" #pac_fecha readonly>
+                                                                -->
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group row mb-3">
+                                                            <label for="inputMOD" class="col-12 col-form-label">Fecha de Situación</label>
+                                                            <div class="col-12">
+                                                                <input type="date" class="form-control form-control-sm" placeholder="" [disabled]="!btn" [(ngModel)]="solicitud.pac_fecha_situacion" name="pac_fecha_situacion" #pac_fecha_situacion readonly>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -297,19 +254,20 @@
                                                 <div class="row">
                                                     <div class="col-sm-6">
                                                         <div class="form-group row mb-3">
-                                                            <label for="inputNOM" class="col-12 col-form-label">Filtrar Pago</label>
+                                                            <label for="inputNOM" class="col-12 col-form-label">Estado de Pago</label>
                                                             <div class="col-12">
-                                                                <select class="form-select form-select-sm w-100 pe-5" aria-label="Default select example" placeholder="Selecciona la respuesta" [(ngModel)]="solicitud.pag_estado" name="pag_estado" #pag_estado required>
+                                                                <select class="form-select form-select-sm w-100 pe-5" aria-label="Default select example" placeholder="Selecciona la respuesta" [(ngModel)]="solicitud.pag_id_tipo_pago" name="pag_id_tipo_pago" #pag_id_tipo_pago required>
                                                                     <option value="" selected disabled>Selecciona la respuesta</option>
-                                                                    <option value="0">Usuario</option>
-                                                                    <option value="1">Administrador</option>
+                                                                    <option value="1">PAGADO</option>
+                                                                    <option value="2">SIN PAGO</option>
+                                                                    <option value="3">PAGO OBSERVADO</option>
                                                                 </select>
                                                             </div>
                                                         </div>
                                                         <div class="form-group row mb-3">
                                                             <label for="inputNOM" class="col-12 col-form-label">N° Pago</label>
                                                             <div class="col-12">
-                                                                <input type="email" class="form-control form-control-sm" placeholder="Correo" [disabled]="!btn" [(ngModel)]="solicitud.pag_nro" name="pag_nro" #pag_nro required>
+                                                                <input type="email" class="form-control form-control-sm" placeholder="" [disabled]="!btn" [(ngModel)]="solicitud.pag_nro" name="pag_nro" #pag_nro required>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -317,13 +275,13 @@
                                                         <div class="form-group row mb-3">
                                                             <label for="inputPRIV" class="col-12 col-form-label">Fecha de Pago</label>
                                                             <div class="col-12">
-                                                                <input type="email" class="form-control form-control-sm" placeholder="Correo" [disabled]="!btn" [(ngModel)]="solicitud.pag_fecha" name="pag_fecha" #pag_fecha required>
+                                                                <input type="date" class="form-control form-control-sm" placeholder="Correo" [disabled]="!btn" [(ngModel)]="solicitud.pag_fecha" name="pag_fecha" #pag_fecha required>
                                                             </div>
                                                         </div>
                                                         <div class="form-group row mb-3">
                                                             <label for="inputMOD" class="col-12 col-form-label">Motivo de Observación</label>
                                                             <div class="col-12">
-                                                                <textarea class="form-control form-control-sm" placeholder="" row="4" [disabled]="!btn" [(ngModel)]="solicitud.pag_obs" name="pag_obs" #pag_obs required>
+                                                                <textarea class="form-control form-control-sm" placeholder="" row="4" [disabled]="!btn" [(ngModel)]="solicitud.observacion" name="observacion" #observacion required>
                                                                 </textarea>
                                                             </div>
                                                         </div>
@@ -363,104 +321,6 @@
 </div>
 
 
-
-<!-- MODAL ADD SOLICITANTE -->
-<!-- MODAL ADD SOLICITANTE -->
-<div class="modal fade bd-example-modal-sm" style="z-index: 5000;" id="modal-add-solicitante" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
-        <div class="modal-content">
-
-            <div class="container-fluid modal-body" style="padding:15px;">
-                <div class="row justify-content-center"> 
-                    <div class="col-md-12">
-
-                                <button type="button" class="btn btn-danger" style="position:absolute;right:13px;padding:6px 15px;" (click)="closeForm(modalForm)"><i class="fas fa-lg fa-times"></i></button>
-                                
-                                <form #modalFormSolicitante="ngForm" class="formulario-modal" enctype="multipart/form-data" (submit)="submit(modalFormSolicitante)" novalidate="">
-                                    <h4 *ngIf="!solicitud.id" style="margin-bottom:18px;width:80%;">REGISTRAR SOLICITANTE</h4>
-                                    <h4 *ngIf="solicitud.id" style="margin-bottom:18px;width:80%;">MODIFICAR SOLICITANTE</h4>
-
-                                    <nav>
-                                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                            <a class="nav-item nav-link active disabled" id="nav-general-tab" data-toggle="tab" href="#nav-general" role="tab" aria-controls="nav-general" aria-selected="true">Datos del Solicitante</a>
-                                        </div>
-                                    </nav>
-                                    <div class="row justify-content-center">   
-                                        <div class="tab-content row justify-content-center col-12" id="nav-tabContent">
-                                            <div class="col-md-12 col-12 tab-pane fade show active" id="nav-general" role="tabpanel" aria-labelledby="nav-general-tab">
-                                                <div class="row">
-                                                    <div class="col-sm-6">
-                                                        <select class="form-select form-select-sm w-100 pe-5" aria-label="Default select example" placeholder="Selecciona la respuesta" [(ngModel)]="solicitante.tipo_doc" name="soli_tipo_doc" #sol_tipo_doc required>
-                                                            <option value="" selected disabled>Selecciona la respuesta</option>
-                                                            <option value="0">Usuario</option>
-                                                            <option value="1">Administrador</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group row mb-3">
-                                                            <label for="inputNOM" class="col-12 col-form-label">Número de Documento</label>
-                                                            <div class="col-12">
-                                                                <input type="text" class="form-control form-control-sm" placeholder=""  autocomplete="off" [disabled]="!btn" [(ngModel)]="solicitante.nro_doc" name="soli_nro_doc" #soli_nro_doc required >
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group row mb-3">
-                                                            <label for="inputNOM" class="col-12 col-form-label">Nombres</label>
-                                                            <div class="col-12">
-                                                                <input type="text" class="form-control form-control-sm" placeholder=""  autocomplete="off" [disabled]="!btn" [(ngModel)]="solicitante.nombres" name="soli_nombres" #soli_nombres required>
-                                                            </div>
-                                                        </div>          
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group row mb-3">
-                                                            <label for="inputNOM" class="col-12 col-form-label">Apellido Paterno</label>
-                                                            <div class="col-12">
-                                                                <input type="text" class="form-control form-control-sm" placeholder=""  autocomplete="off" [disabled]="!btn" [(ngModel)]="solicitante.apellido_pat" name="soli_apellido_pat" #soli_apellido_pat required>
-                                                            </div>
-                                                        </div>          
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group row mb-3">
-                                                            <label for="inputNOM" class="col-12 col-form-label">Apellido Materno</label>
-                                                            <div class="col-12">
-                                                                <input type="text" class="form-control form-control-sm" placeholder=""  autocomplete="off" [disabled]="!btn" [(ngModel)]="solicitante.apellido_mat" name="soli_apellido_pat" #soli_apellido_mat required>
-                                                            </div>
-                                                        </div>          
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-           
-                                    
-                                    <div class="w-100" style="height:12px;"></div>
-                                    <div class="msg-ajax-result"></div>
-
-
-                                    <div class="row justify-content-center">
-                                        <div class="col-sm-4 col-12 mb-2">
-                                            <button *ngIf="btn" type="submit" class="btn w-100 btn-success btn_modals" [disabled]="!modalFormSolicitante.form.valid"><i class="far fa-lg fa-save"></i> Guardar</button>
-                                            <button *ngIf="!btn" type="button" class="btn w-100 btn-success btn_modals" disabled><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Cargando</button>
-                                        </div>
-                                        <div class="col-sm-4 col-12 mb-2 modal-btn-cont d-none">
-                                           
-                                        </div>
-                                        <div class="col-sm-4 col-12 mb-2">
-                                            <button type="button" class="btn w-100 btn-warning btn_modals" (click)="closeForm(modalFormSolicitante)"><i class="fas fa-lg fa-ban"></i> Cancelar</button>
-                                        </div>
-                                    </div>
-
-
-                                </form>
-                                
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-</div>
 
 
 
