@@ -1,7 +1,7 @@
 <?php
 
 $serverName = "127.0.0.1, 1433"; //"serverName\instanceName"
-$connectionInfo = array( "Database"=>"SIGHEAV_ESTADISTICA", "UID"=>"sa", "PWD"=>"ae9a56ed87", 'ReturnDatesAsStrings'=>true , "CharacterSet" => "UTF-8");
+$connectionInfo = array( "Database"=>"SIGHEAV_ESTADISTICA", "UID"=>"sa", "PWD"=>"", 'ReturnDatesAsStrings'=>true , "CharacterSet" => "UTF-8");
 $conn = sqlsrv_connect($serverName, $connectionInfo);
 
 
