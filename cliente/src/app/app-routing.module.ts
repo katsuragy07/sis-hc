@@ -8,6 +8,7 @@ import { SisHcRegistroComponent } from './sis-main/sis-hc-registro/sis-hc-regist
 import { SisHcValidarComponent } from './sis-main/sis-hc-validar/sis-hc-validar.component';
 import { SisMainComponent } from './sis-main/sis-main.component';
 import { SisModulosComponent } from './sis-main/sis-modulos/sis-modulos.component';
+import { SisPasswordComponent } from './sis-main/sis-password/sis-password.component';
 import { SisUsuariosComponent } from './sis-main/sis-usuarios/sis-usuarios.component';
 
 const routes: Routes = [
@@ -24,6 +25,10 @@ const routes: Routes = [
       {
         path: 'modulos',
         component: SisModulosComponent
+      },
+      {
+        path: 'password',
+        component: SisPasswordComponent
       },
       {
         path: 'registro',

@@ -47,8 +47,9 @@
                 <button type="button" class="btn btn-secondary border-0 bg-transparent dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-offset="1,7">
                   Mi cuenta
                 </button>
-                <ul class="dropdown-menu dropdown-menu-end">
-                  <li><button class="dropdown-item" type="button" (click)="logout();">Cerrar Sessión</button></li>
+                <ul class="dropdown-menu dropdown-menu-end text-end">
+                    <li routerLink="/password"><button class="dropdown-item" type="button">Cambiar contraseña</button></li>
+                    <li><button class="dropdown-item" type="button" (click)="logout();">Cerrar Sessión</button></li>
                 </ul>
             </div>
         </header>
@@ -65,11 +66,14 @@
     <nav class="position-relative float-start h-100">
         <div class="container-fluid">
             <div class="row">
-               <div class="col-12">
+               <div class="col-12 mb-4 mt-2">
+                   <img src="assets/oie_transparent.png" alt="" width="100%">
+                    <!--
                    <h3 class="mt-3 fw-bold">{{usuario.nombre}} {{usuario.apellido}}</h3>
                    <h5 class="text-center text-primary" *ngIf="usuario.privilegios=='1'">Administrador</h5>
                    <h5 class="text-center text-primary" *ngIf="usuario.privilegios=='0'">Usuario</h5>
                    <hr>
+                    -->
                </div>
                <div class="col-12 p-0">   
                     <div class="accordion accordion-flush" id="accordionFlushExample">
@@ -159,7 +163,7 @@
                     -->
                </div>
                <div class="col-12">
-                   <hr>
+                   
                </div>
             </div>
         </div>

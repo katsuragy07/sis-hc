@@ -17,6 +17,7 @@ import { SisHcRegistroComponent } from './sis-main/sis-hc-registro/sis-hc-regist
 import { SisHcAtencionComponent } from './sis-main/sis-hc-atencion/sis-hc-atencion.component';
 import { SisHcValidarComponent } from './sis-main/sis-hc-validar/sis-hc-validar.component';
 import { LoginComponent } from './login/login.component';
+import { SisPasswordComponent } from './sis-main/sis-password/sis-password.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { LoginComponent } from './login/login.component';
     SisHcRegistroComponent,
     SisHcAtencionComponent,
     SisHcValidarComponent,
-    LoginComponent
+    LoginComponent,
+    SisPasswordComponent
   ],
   imports: [
     CommonModule,

@@ -1,10 +1,11 @@
 <div class="inicio">
     <div class="col-12">
-        <img src="assets/logo-heav.png" alt="" height="80">
-        <h3 class="fw-bold mt-0 mb-4">Mantenimiento de Usuarios</h3>
-        <hr class="mb-2">
-
-        <button style="width:155px;" type="button" class="btn btn-success m-1" data-bs-toggle="modal" data-bs-target="#modal-add" (click)="resetForm(modalForm)"><i class="fas fa-plus-circle"></i> Agregar</button>
+        <br>
+        <h4 class="mt-0 float-start">Mantenimiento de Usuarios</h4>
+        <button style="width:155px;" type="button" class="btn btn-success float-end mb-3" data-bs-toggle="modal" data-bs-target="#modal-add" (click)="resetForm(modalForm)"><i class="fas fa-plus-circle"></i> Agregar</button>
+       
+        <hr class="mb-3 w-100">
+ 
 
         <form class="row mt-2" #searchForm="ngForm" (submit)="filtrar(search.value, search_type.value)">
             <div class="col-md-3 col-sm-3 mb-2">
@@ -17,7 +18,7 @@
                 <input type="text" class="form-control" placeholder="Buscar Usuario" aria-label="Search" #search (keyup)="filtrar(search.value, search_type.value);">
             </div>
             <div class="col-md-3 col-sm-3 mb-2">
-                <button type="submit" class="btn w-100 btn-success"><i class="fas fa-search"></i> Buscar</button>
+                <button type="submit" class="btn w-100 btn-primary"><i class="fas fa-search"></i> Buscar</button>
                 <!--<button type="submit" class="btn w-100 btn-success" data-bs-toggle="modal" data-bs-target="#modal-add">Buscar <i class="fas fa-user-plus"></i></button>-->
             </div>
         </form>
@@ -25,31 +26,31 @@
             <div class="col-12">
                 <div class="table-responsive">
                     <table class="table table-sm  text-start table-hover">
-                        <thead class="table-dark">
+                        <thead class="bg-h-table">
                             <tr class="align-middle">
-                                <th class="pt-2 pb-2 pl-2 pr-2 text-center" scope="col">#</th>
-                                <th scope="col">EMAIL</th>
-                                <th scope="col">PRIVILEGIOS</th>
-                                <th scope="col">NOMBRE</th>
-                                <th scope="col">APELLIDO</th>
-                                <th scope="col" class="text-center">OPERACIONES</th>
+                                <th class="pt-2 pb-2 pl-2 pr-2 text-center border-0" scope="col">#</th>
+                                <th class="border-0" scope="col">Email</th>
+                                <th class="border-0" scope="col">Privilegios</th>
+                                <th class="border-0" scope="col">Nombre</th>
+                                <th class="border-0" scope="col">Apellido</th>
+                                <th class="border-0 text-center" scope="col">Operaciones</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white">
     
                             <ng-container *ngIf="ready">
                                 <tr class="align-middle" *ngFor="let data of usuarios; let i = index" >
-                                    <td class="text-center">{{i+1}}</td>
+                                    <td>{{i+1}}</td>
                                     <td>{{data.email}}</td>
-                                    <td class="text-center">
-                                        <span class="badge rounded-pill bg-dark" *ngIf="data.privilegios==1">Administrador</span>
-                                        <span class="badge rounded-pill bg-secondary" *ngIf="data.privilegios==0">Usuario</span>
+                                    <td>
+                                        <span *ngIf="data.privilegios==1">Administrador</span>
+                                        <span *ngIf="data.privilegios==0">Usuario</span>
                                     </td>
                                     <td>{{data.nombre}}</td>
                                     <td>{{data.apellido}}</td>
                                     
                                     <td class="text-center">
-                                        <button style="width:140px;" type="button" class="btn btn-sm btn-primary m-1" data-bs-toggle="modal" data-bs-target="#modal-add" (click)='edit(data)'><i class="fas fa-edit"></i> Modificar</button>
+                                        <button style="width:140px;" type="button" class="btn btn-sm btn-warning m-1" data-bs-toggle="modal" data-bs-target="#modal-add" (click)='edit(data)'><i class="fas fa-edit"></i> Modificar</button>
                                         <button style="width:140px;" type="button" class="btn btn-sm btn-danger m-1" data-bs-toggle="modal" data-bs-target="#modal-confirm" (click)='eliminar(data)'><i class="fas fa-trash"></i> Eliminar</button>
                                     </td>
                                 </tr>

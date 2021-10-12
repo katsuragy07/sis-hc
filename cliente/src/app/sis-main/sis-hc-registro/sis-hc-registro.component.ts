@@ -81,11 +81,19 @@ export class SisHcRegistroComponent implements OnInit {
 
   
   resetForm(getForm){
+    $("#inputUSER").removeClass("is-valid");
+    $("#inputUSER").removeClass("is-invalid");
+    $("#inputDEP").removeClass("is-valid");
+    $("#inputDEP").removeClass("is-invalid");
     getForm.resetForm();
     this.solicitud = new Solicitud();
   }
 
   closeForm(getForm){
+    $("#inputUSER").removeClass("is-valid");
+    $("#inputUSER").removeClass("is-invalid");
+    $("#inputDEP").removeClass("is-valid");
+    $("#inputDEP").removeClass("is-invalid");
     $("#modal-add").modal('hide');
     $("#modal-add-solicitante").modal('hide');
     getForm.resetForm();

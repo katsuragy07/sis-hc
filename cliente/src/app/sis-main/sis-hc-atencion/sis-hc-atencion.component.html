@@ -1,8 +1,10 @@
 <div class="inicio">
     <div class="col-12">
-        <img src="assets/logo-heav.png" alt="" height="80">
-        <h3 class="fw-bold mt-0 mb-4">Atención de Solicitudes</h3>
-        <hr class="mb-2">
+        <br>
+        <h4 class="mt-0 float-start">Atención de Solicitudes</h4>
+
+
+        <hr class="mb-3 w-100">
 
         <!--
         <button style="width:155px;" type="button" class="btn btn-success m-1" data-bs-toggle="modal" data-bs-target="#modal-add" (click)="resetForm(modalForm)"><i class="fas fa-plus-circle"></i> Registrar</button>
@@ -34,7 +36,7 @@
             </div>
             <div class="col-md-3 col-sm-3 mb-2">
                 <label for="inputNOM" class="col-12 col-form-label invisible">.</label>
-                <button type="submit" class="btn w-100 btn-success"><i class="fas fa-search"></i> Buscar</button>
+                <button type="submit" class="btn w-100 btn-primary"><i class="fas fa-search"></i> Buscar</button>
                 <!--<button type="submit" class="btn w-100 btn-success" data-bs-toggle="modal" data-bs-target="#modal-add">Buscar <i class="fas fa-user-plus"></i></button>-->
             </div>
         </form>
@@ -42,18 +44,18 @@
             <div class="col-12">
                 <div class="table-responsive">
                     <table class="table table-sm  text-start table-hover">
-                        <thead class="table-dark">
+                        <thead class="bg-h-table">
                             <tr class="align-middle">
-                                <th class="pt-2 pb-2 pl-2 pr-2 text-center" scope="col">N°</th>
-                                <th scope="col">N° Solicitud</th>
-                                <th scope="col">Nombre del Solicitante</th>
-                                <th scope="col">Nombre del Paciente</th>
-                                <th scope="col">Situacion</th>
-                                <th scope="col">Fecha de Situacion</th>
-                                <th scope="col">Solicitud</th>
-                                <th scope="col">Estado</th>
-                                <th scope="col">Pago</th>
-                                <th scope="col" class="text-center">Operaciones</th>
+                                <th class="border-0 pt-2 pb-2 pl-2 pr-2 text-center" scope="col">N°</th>
+                                <th class="border-0" scope="col">N° Solicitud</th>
+                                <th class="border-0" scope="col">Nombre del Solicitante</th>
+                                <th class="border-0" scope="col">Nombre del Paciente</th>
+                                <th class="border-0" scope="col">Situacion</th>
+                                <th class="border-0" scope="col">Fecha de Situacion</th>
+                                <th class="border-0" scope="col">Solicitud</th>
+                                <th class="border-0" scope="col">Estado</th>
+                                <th class="border-0" scope="col">Pago</th>
+                                <th scope="col" class="border-0 text-center">Operaciones</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white">
@@ -65,13 +67,13 @@
                                     <td>{{data.expediente_sgd}}</td>
                                     <td>{{data.sol_nombre}}</td>
                                     <td>{{data.pac_nombre}}</td>
-                                    <td class="text-center">{{data.pac_situacion}}</td>
-                                    <td class="text-center">{{data.pac_fecha_situacion}}</td>
+                                    <td>{{data.pac_situacion}}</td>
+                                    <td>{{data.pac_fecha_situacion}}</td>
                                     <td>{{data.tipo_solicitud}}</td>
                                     <td>{{data.estado_solicitud}}</td>
                                     <td class="text-center"></td>
                                     <td class="text-center">
-                                        <button style="width:120px;" type="button" class="btn btn-sm btn-primary m-1" data-bs-toggle="modal" data-bs-target="#modal-add" (click)='editSolicitudes(data)' [disabled]="data.id_pago"><i class="fas fa-edit"></i> Atender</button>
+                                        <button style="width:120px;" type="button" class="btn btn-sm btn-warning m-1" data-bs-toggle="modal" data-bs-target="#modal-add" (click)='editSolicitudes(data)' [disabled]="data.id_pago"><i class="fas fa-edit"></i> Atender</button>
                                     </td>
                                 </tr>
                             </ng-container>

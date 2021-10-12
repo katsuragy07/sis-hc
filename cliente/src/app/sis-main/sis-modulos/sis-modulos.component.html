@@ -1,10 +1,12 @@
 <div class="inicio">
     <div class="col-12">
-        <img src="assets/logo-heav.png" alt="" height="80">
-        <h3 class="fw-bold mt-0 mb-4">Asignación de Modulos</h3>
-        <hr class="mb-2">
+        <br>
+        <h4 class="mt-0 float-start">Asignación de Modulos</h4>
 
         <button style="width:155px;" type="button" class="btn btn-success m-1" data-bs-toggle="modal" data-bs-target="#modal-add" (click)="resetForm(modalForm)"><i class="fas fa-plus-circle"></i> Agregar</button>
+
+        <hr class="mb-2">
+
 
         <form class="row mt-2" #searchForm="ngForm" (submit)="filtrar(search.value, search_type.value)">
             <div class="col-md-3 col-sm-3 mb-2">
@@ -17,7 +19,7 @@
                 <input type="text" class="form-control" placeholder="Buscar Usuario" aria-label="Search" #search (keyup)="filtrar(search.value, search_type.value);">
             </div>
             <div class="col-md-3 col-sm-3 mb-2">
-                <button type="submit" class="btn w-100 btn-success"><i class="fas fa-search"></i> Buscar</button>
+                <button type="submit" class="btn w-100 btn-primary"><i class="fas fa-search"></i> Buscar</button>
                 <!--<button type="submit" class="btn w-100 btn-success" data-bs-toggle="modal" data-bs-target="#modal-add">Buscar <i class="fas fa-user-plus"></i></button>-->
             </div>
         </form>
@@ -25,14 +27,14 @@
             <div class="col-12">
                 <div class="table-responsive">
                     <table class="table table-sm  text-start table-hover">
-                        <thead class="table-dark">
+                        <thead class="bg-h-table">
                             <tr class="align-middle">
-                                <th class="pt-2 pb-2 pl-2 pr-2 text-center" scope="col">#</th>
-                                <th scope="col">NOMBRE</th>
-                                <th scope="col">CORREO</th>
-                                <th scope="col">MODALIDAD</th>
-                                <th scope="col">PRIVILEGIOS</th>
-                                <th scope="col" class="text-center">OPERACIONES</th>
+                                <th class="border-0 pt-2 pb-2 pl-2 pr-2 text-center" scope="col">#</th>
+                                <th class="border-0" scope="col">NOMBRE</th>
+                                <th class="border-0" scope="col">CORREO</th>
+                                <th class="border-0" scope="col">MODALIDAD</th>
+                                <th class="border-0" scope="col">PRIVILEGIOS</th>
+                                <th scope="col" class="border-0 text-center">OPERACIONES</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white">

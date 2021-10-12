@@ -3,45 +3,55 @@
         
     </div>
     <div class="container-body">
-        <div class="row justify-content-center h-100 m-0">
-            <div class="col-xl-5 col-lg-5 col-md-6 col-sm-8 col-11 pt-3 pb-5">
-                
-                <div class="row">
-                    <div class="col-6">
-                        <img src="assets/logo-heav.png" alt="" width="100%">
+
+        <div class="row justify-content-center h-100 position-relative w-100">
+            <div class="col-xl-8 col-lg-10 col-md-11 col-sm-11 col-12 h-100">
+                <div class="row justify-content-center m-0 position-relative bg-white overflow-hidden" style="top:50%; transform: translateY(-50%); border-radius: 10px;">
+                    <div class="col-xl-6 col-lg-6 col-md-6 img-login">
+
                     </div>
-                    <div class="col-6">
-                        <img class="pt-2 pt-sm-2 pt-md-3" src="assets/HEAVDD.jpg" alt="" width="100%">
-                    </div>
-                    <div class="col-12 pt-5 pb-4">
-                        <h1 class="text-center">LOGO</h1>
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-10 col-12 pt-5 pb-5 ps-5 pe-5">
+                        
+                        <br><br><br>
+
+                        <div class="row m-0 justify-content-center">
+                            <div class="col-xl-10 col-lg-11 col-12">
+                                <img src="assets/logo-heav.png" alt="" width="100%">
+                            </div>
+                            <div class="col-12 pt-3 pb-4">
+                                <h3 class="text-center">GESTIÓN DE ARCHIVO CLÍNICO</h3>
+                            </div>
+                        </div>
+        
+                        <form class="bg-white box-radius-lg pl-4 pr-4 pb-4 pt-2 position-relative" accept-charset="utf-8" autocomplete="off" #loginForm="ngForm" (submit)="submit(loginForm)">
+                                <div class="rowm-0">
+                                    <div class="col-12">
+                                        <div class="form-group row m-0">
+                                            <div class="col-12 mb-3">
+                                                <input type="text" class="form-control" placeholder="Usuario" required [(ngModel)]="usuario.email" name="email" #email autofocus>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row m-0">
+                                            <div class="col-12 mb-3">
+                                                <input type="password" class="form-control" placeholder="Password" required [(ngModel)]="usuario.pass" name="pass" #pass>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-2 m-0">
+                                    <div class="col-12 text-end">
+                                        <button class="btn btn-primary d-inline pl-5 pr-5 mb-2 fw-bolder float-right" style="width: 150px;">INGRESAR</button>
+                                    </div>
+                                </div>
+                        </form>
+                       
+                        <br><br>
+
                     </div>
                 </div>
-                    <form class="bg-white box-radius-lg pl-4 pr-4 pb-4 pt-3 position-relative" accept-charset="utf-8" autocomplete="off" #loginForm="ngForm" (submit)="submit(loginForm)">
-                        <div class="row mt-3">
-                            <div class="col-12">
-                                <div class="form-group row mb-2">
-                                    <label class="col-md-4 col-sm-4 col-12 col-form-label text-body fw-bold text-sm-end text-start">Usuario:</label>
-                                    <div class="col-xl-6 col-lg-7 col-md-7 col-sm-8 col-12">
-                                        <input type="text" class="form-control form-control-sm" placeholder="" required [(ngModel)]="usuario.email" name="email" #email autofocus>
-                                    </div>
-                                </div>
-                                <div class="form-group row mb-2">
-                                    <label class="col-md-4 col-sm-4 col-12 col-form-label text-body fw-bold text-sm-end text-start">Contraseña:</label>
-                                    <div class="col-xl-6 col-lg-7 col-md-7 col-sm-8 col-12">
-                                        <input type="password" class="form-control form-control-sm" placeholder="" required [(ngModel)]="usuario.pass" name="pass" #pass>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mt-3">
-                            <div class="col-12 text-center">
-                                <button class="btn btn-danger d-inline pl-5 pr-5 mb-2" style="width: 150px;">Ingresar</button>
-                            </div>
-                        </div>
-                    </form>
-               
             </div>
         </div>
+        
+        
     </div>
 </div>

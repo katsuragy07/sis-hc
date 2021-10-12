@@ -63,8 +63,8 @@ export class SisMainComponent implements OnInit {
       if(this.windowsX<700){
 
       }else{
-        $(".main-container section").css("padding-left","260px");
-        $(".nav-min").css("width","260px");
+        $(".main-container section").css("padding-left","310px");
+        $(".nav-min").css("width","310px");
         setTimeout(()=>{
           $(".main-container > nav").css("display","block");
           $(".nav-min").css("display","none");
